@@ -1,5 +1,5 @@
-import 'package:quran_clean/modules/quran/domain/models/surat.dart';
-import 'package:quran_clean/modules/quran/domain/repositories/quran_repository.dart';
+import '../models/surat.dart';
+import '../repositories/quran_repository.dart';
 
 class LoadListSurat {
   final QuranRepository repository;

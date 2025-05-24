@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
-import 'package:quran_clean/modules/quran/data/repositories/quran_repository_impl.dart';
-import 'package:quran_clean/modules/quran/domain/models/surat.dart';
-import 'package:quran_clean/modules/quran/domain/use_cases/load_list_surat.dart';
+
+import '../../data/repositories/quran_repository_impl.dart';
+import '../../domain/models/surat.dart';
+import '../../domain/use_cases/load_list_surat.dart';
 
 class QuranController extends GetxController {
   List<Surat> listSurat = [];
