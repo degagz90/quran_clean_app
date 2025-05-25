@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:xml/xml.dart';
 
-import '../datasources/quran_local_datasource.dart';
 import '../../domain/models/ayat.dart';
+import '../../domain/models/juz.dart';
 import '../../domain/models/surat.dart';
 import '../../domain/repositories/quran_repository.dart';
+import '../datasources/quran_local_datasource.dart';
 
 class QuranRepositoryImpl implements QuranRepository {
   final localData = QuranLocalDatasource();
@@ -59,6 +61,19 @@ class QuranRepositoryImpl implements QuranRepository {
         type: element['type'],
         noSurat: element['number_of_surah'],
         jmlAyat: element['number_of_ayah'],
+      );
+    }).toList();
+  }
+
+  @override
+  Future<List<Juz>> getListJuz() async {
+    final xmlDocument = await localData.loadQuranMeta();
+    final elements = xmlDocument.findAllElements('juz');
+    return elements.map<Juz>((child) {
+      return Juz(
+        noJuz: int.parse(child.getAttribute('index') ?? '0'),
+        startSuratNo: int.parse(child.getAttribute('sura') ?? '0'),
+        startAyatNo: int.parse(child.getAttribute('aya') ?? '0'),
       );
     }).toList();
   }

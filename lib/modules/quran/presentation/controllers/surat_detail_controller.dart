@@ -7,12 +7,14 @@ import '../../domain/use_cases/load_surat.dart';
 class SuratDetailController extends GetxController {
   final repository = QuranRepositoryImpl();
   RxInt noSurat = 0.obs;
+  RxInt noAyat = 0.obs;
   Surat? surat;
   List<Ayat> listAyat = [];
 
   @override
   void onInit() {
     noSurat.value = Get.arguments['no_surat'];
+    noAyat.value = Get.arguments['no_ayat'] ?? 0;
     super.onInit();
   }
 
@@ -21,7 +23,7 @@ class SuratDetailController extends GetxController {
     try {
       surat = await useCase.findSurat(noSurat.value);
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
@@ -30,7 +32,7 @@ class SuratDetailController extends GetxController {
     try {
       listAyat = await useCase.getListAyat(noSurat.value);
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controllers/quran_controller.dart';
+import '../widgets/juz_tab.dart';
 import '../widgets/last_read_card.dart';
 import '../widgets/surat_tab.dart';
-import '../controllers/quran_controller.dart';
 
 class QuranView extends GetView<QuranController> {
   const QuranView({super.key});
@@ -15,7 +16,10 @@ class QuranView extends GetView<QuranController> {
       child: Scaffold(
         appBar: AppBar(title: Text('Quran Clean App')),
         body: FutureBuilder(
-          future: controller.loadSuratList(),
+          future: Future.wait([
+            controller.loadSuratList(),
+            controller.loadJuzList(),
+          ]),
           builder: (context, snapsot) {
             if (snapsot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -31,9 +35,7 @@ class QuranView extends GetView<QuranController> {
                       Tab(text: 'Juz'),
                     ],
                   ),
-                  Expanded(
-                    child: TabBarView(children: [SuratTab(), Text('tab 2')]),
-                  ),
+                  Expanded(child: TabBarView(children: [SuratTab(), JuzTab()])),
                 ],
               ),
             );

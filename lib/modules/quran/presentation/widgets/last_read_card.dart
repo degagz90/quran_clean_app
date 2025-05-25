@@ -9,16 +9,19 @@ class QuranLastReadCard extends StatelessWidget {
     return SizedBox(
       height: 200,
       child: Center(
-        child: Container(
-          height: 180,
-          width: Get.width - 30,
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            image: DecorationImage(
-              image: AssetImage('assets/images/last_read.png'),
-              fit: BoxFit.cover,
+        child: Card(
+          elevation: 10,
+          clipBehavior: Clip.hardEdge,
+          child: Container(
+            height: 180,
+            width: Get.width - 30,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              image: DecorationImage(
+                image: AssetImage('assets/images/last_read.png'),
+                fit: BoxFit.cover,
+              ),
             ),
-            borderRadius: BorderRadius.circular(20),
           ),
         ),
       ),
