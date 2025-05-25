@@ -18,18 +18,39 @@ class SuratDetailView extends GetView<SuratDetailController> {
         }
         return Scaffold(
           appBar: AppBar(
-            title: Text(
-              '${controller.surat?.noSurat ?? ''}. ${controller.surat?.name ?? 'no data'}',
+            title: Obx(
+              () => Text(
+                '${controller.noSurat.value}. ${controller.surat?.name ?? 'no data'}',
+              ),
             ),
           ),
-          body: SafeArea(
-            minimum: EdgeInsets.all(12),
-            child: Column(
-              children: [
-                SizedBox(height: 200, child: SuratHeaderCard()),
-                Expanded(child: AyatWidget()),
-              ],
-            ),
+          body: PageView.builder(
+            itemCount: 114,
+            reverse: true,
+            controller: controller.pageC,
+            onPageChanged: (value) async {
+              controller.resetPage();
+              controller.noSurat.value = value + 1;
+              await controller.findSurat();
+              await controller.getListAyat();
+              controller.update();
+            },
+            itemBuilder: (context, index) {
+              return GetBuilder<SuratDetailController>(
+                initState: (_) {},
+                builder: (_) {
+                  return SafeArea(
+                    minimum: EdgeInsets.all(12),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 200, child: SuratHeaderCard()),
+                        Expanded(child: AyatWidget()),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
           ),
         );
       },

@@ -3,7 +3,7 @@ import '../repositories/quran_repository.dart';
 
 class LoadListJuz {
   final QuranRepository repository;
-  LoadListJuz({required this.repository});
+  LoadListJuz(this.repository);
 
   Future<List<Juz>> execute() async {
     return await repository.getListJuz();

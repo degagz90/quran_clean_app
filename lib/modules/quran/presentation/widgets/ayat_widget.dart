@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/text_styles/app_text.dart';
@@ -11,7 +12,28 @@ class AyatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<SuratDetailController>();
-    return ListView.separated(
+    final itemScrollC = ItemScrollController();
+    final itemPosC = ItemPositionsListener.create();
+    itemPosC.itemPositions.addListener(() {
+      final positions = itemPosC.itemPositions.value;
+      if (positions.isNotEmpty) {
+        // Ambil ayat pertama yang terlihat di layar
+        final firstVisible = positions
+            .map((e) => e.index)
+            .reduce((a, b) => a < b ? a : b);
+        controller.lastReadAyat.value =
+            controller.listAyat[firstVisible].noAyat;
+      }
+    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (controller.noAyat.value != 0) {
+        itemScrollC.jumpTo(index: controller.noAyat.value - 1);
+      }
+    });
+    // print(itemPosC.itemPositions.value.first);
+    return ScrollablePositionedList.separated(
+      itemScrollController: itemScrollC,
+      itemPositionsListener: itemPosC,
       itemBuilder: (context, index) {
         final ayat = controller.listAyat[index];
         return Column(
@@ -56,6 +78,10 @@ class AyatWidget extends StatelessWidget {
                               barrierDismissible: false,
                               onCancel: () {},
                               textCancel: 'Tutup',
+                              buttonColor: Theme.of(context).primaryColor,
+                              titleStyle: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                              ),
                               title:
                                   'Tafsir QS. ${controller.surat?.name}: ${ayat.noAyat}',
                               content: Flexible(

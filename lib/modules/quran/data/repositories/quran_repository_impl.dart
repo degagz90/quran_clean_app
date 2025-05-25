@@ -77,4 +77,17 @@ class QuranRepositoryImpl implements QuranRepository {
       );
     }).toList();
   }
+
+  @override
+  Future<void> saveLastRead(int noSurat, int noAyat) async {
+    await localData.savedAyat.write("no_surat", noSurat);
+    await localData.savedAyat.write("no_ayat", noAyat);
+  }
+
+  @override
+  Future<List<int>> getLastRead() async {
+    final noSurat = await localData.savedAyat.read("no_surat") ?? 0;
+    final noAyat = await localData.savedAyat.read("no_ayat") ?? 0;
+    return [noSurat, noAyat];
+  }
 }

@@ -34,7 +34,7 @@ class AppText {
   static const subtitleText = TextStyle(
     fontFamily: 'Poppins',
     fontWeight: FontWeight.w500,
-    fontSize: 12,
+    fontSize: 14,
     color: Color(0xFF616161),
   );
 }

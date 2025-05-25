@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quran_clean/core/constants/text_styles/app_text.dart';
 
 import '../constants/colors/app_colors.dart';
 
@@ -14,12 +15,7 @@ class AppTheme {
         fontWeight: FontWeight.w500,
         color: AppColors.biruTua1,
       ),
-      subtitleTextStyle: TextStyle(
-        fontFamily: 'Poppins',
-        fontWeight: FontWeight.w500,
-        fontSize: 12,
-        color: AppColors.abu1,
-      ),
+      subtitleTextStyle: AppText.subtitleText,
       leadingAndTrailingTextStyle: TextStyle(
         fontFamily: 'Amiri',
         color: AppColors.ungu2,
