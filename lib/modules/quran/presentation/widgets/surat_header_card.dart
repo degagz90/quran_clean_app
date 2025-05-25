@@ -19,7 +19,7 @@ class SuratHeaderCard extends StatelessWidget {
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('lib/core/assets/images/card.png'),
+            image: AssetImage('assets/images/card.png'),
             fit: BoxFit.cover,
           ),
         ),

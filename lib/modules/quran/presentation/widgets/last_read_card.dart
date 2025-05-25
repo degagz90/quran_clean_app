@@ -15,7 +15,7 @@ class QuranLastReadCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.grey,
             image: DecorationImage(
-              image: AssetImage('lib/core/assets/images/last_read.png'),
+              image: AssetImage('assets/images/last_read.png'),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(20),

@@ -51,7 +51,28 @@ class AyatWidget extends StatelessWidget {
                         ),
                         IconButton(onPressed: () {}, icon: Icon(Icons.share)),
                         TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.defaultDialog(
+                              barrierDismissible: false,
+                              onCancel: () {},
+                              textCancel: 'Tutup',
+                              title:
+                                  'Tafsir QS. ${controller.surat?.name}: ${ayat.noAyat}',
+                              content: Flexible(
+                                child: SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                    ),
+                                    child: Text(
+                                      '${ayat.tafsir}\n\nsumber: Aplikasi Quran Kementrian Agama Republik Indonesia',
+                                      style: AppText.subtitleText,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                           label: Text(
                             'tafsir',
                             style: TextStyle(fontWeight: FontWeight.bold),

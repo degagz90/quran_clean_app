@@ -56,8 +56,8 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - lib/core/assets/jsons/
-    - lib/core/assets/images/
+    - assets/jsons/
+    - assets/images/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -71,23 +71,23 @@ flutter:
   fonts:
     - family: Amiri
       fonts:
-        - asset: lib/core/assets/fonts/amiri/Amiri-Regular.ttf
-        - asset: lib/core/assets/fonts/amiri/Amiri-Italic.ttf
+        - asset: assets/fonts/amiri/Amiri-Regular.ttf
+        - asset: assets/fonts/amiri/Amiri-Italic.ttf
           style: italic
-        - asset: lib/core/assets/fonts/amiri/Amiri-Bold.ttf
+        - asset: assets/fonts/amiri/Amiri-Bold.ttf
           weight: 700
 
     - family: Poppins
       fonts:
-        - asset: lib/core/assets/fonts/poppins/Poppins-Regular.ttf
-        - asset: lib/core/assets/fonts/poppins/Poppins-Italic.ttf
+        - asset: assets/fonts/poppins/Poppins-Regular.ttf
+        - asset: assets/fonts/poppins/Poppins-Italic.ttf
           style: italic
-        - asset: lib/core/assets/fonts/poppins/Poppins-Bold.ttf
+        - asset: assets/fonts/poppins/Poppins-Bold.ttf
           weight: 700
 
     - family: Quran Kemenag
       fonts:
-        - asset: lib/core/assets/fonts/quran_kemenag/LPMQ IsepMisbah.ttf
+        - asset: assets/fonts/quran_kemenag/LPMQ IsepMisbah.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
