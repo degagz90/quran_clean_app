@@ -43,6 +43,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
+  test: ^1.25.15
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -83,6 +84,10 @@ flutter:
           style: italic
         - asset: lib/core/assets/fonts/poppins/Poppins-Bold.ttf
           weight: 700
+
+    - family: Quran Kemenag
+      fonts:
+        - asset: lib/core/assets/fonts/quran_kemenag/LPMQ IsepMisbah.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

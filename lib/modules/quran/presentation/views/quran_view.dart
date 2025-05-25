@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quran_clean/modules/quran/presentation/widgets/last_read_card.dart';
-import 'package:quran_clean/modules/quran/presentation/widgets/surat_tab.dart';
 
+import '../widgets/last_read_card.dart';
+import '../widgets/surat_tab.dart';
 import '../controllers/quran_controller.dart';
 
 class QuranView extends GetView<QuranController> {

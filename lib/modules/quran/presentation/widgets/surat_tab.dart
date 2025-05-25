@@ -13,12 +13,16 @@ class SuratTab extends StatelessWidget {
       separatorBuilder: (context, index) => Divider(),
       itemCount: controller.listSurat.length,
       itemBuilder: (context, index) {
-        final surah = controller.listSurat[index];
+        final surat = controller.listSurat[index];
         return ListTile(
-          leading: CircleAvatar(child: Text('${surah.noSurat}')),
-          title: Text('${surah.name} (${surah.indoName})'),
-          subtitle: Text('${surah.type} - ${surah.jmlAyat} ayat'),
-          trailing: Text(surah.arabName, style: TextStyle(fontFamily: 'Amiri')),
+          onTap: () => Get.toNamed(
+            '/surat_detail',
+            arguments: {'no_surat': surat.noSurat},
+          ),
+          leading: CircleAvatar(child: Text('${surat.noSurat}')),
+          title: Text('${surat.name} (${surat.indoName})'),
+          subtitle: Text('${surat.type} - ${surat.jmlAyat} ayat'),
+          trailing: Text(surat.arabName, style: TextStyle(fontFamily: 'Amiri')),
         );
       },
     );

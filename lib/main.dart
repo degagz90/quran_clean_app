@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quran_clean/core/constants/themes/app_theme.dart';
+import 'package:quran_clean/core/themes/app_theme.dart';
 
 import 'core/routes/app_pages.dart';
 

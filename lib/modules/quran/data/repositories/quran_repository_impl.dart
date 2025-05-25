@@ -15,15 +15,36 @@ class QuranRepositoryImpl implements QuranRepository {
   }
 
   @override
-  Future<Surat> findSurat(int noSurat) {
-    // TODO: implement findSurat
-    throw UnimplementedError();
+  Future<Surat> findSurat(int noSurat) async {
+    final quranJson = await localData.loadQuranJson();
+    final List<dynamic> surats = jsonDecode(quranJson);
+    final surat = surats[noSurat - 1];
+    return Surat(
+      name: surat['name'],
+      arabName: surat['name_translations']['ar'],
+      indoName: surat['name_translations']['id'],
+      type: surat['type'],
+      noSurat: surat['number_of_surah'],
+      jmlAyat: surat['number_of_ayah'],
+    );
   }
 
   @override
-  Future<List<Ayat>> getListAyat(int noSurat) {
-    // TODO: implement getListAyat
-    throw UnimplementedError();
+  Future<List<Ayat>> getListAyat(int noSurat) async {
+    final quranJson = await localData.loadQuranJson();
+    final List<dynamic> surats = jsonDecode(quranJson);
+    final List<dynamic> ayats = surats[noSurat - 1]['verses'];
+    return ayats.map<Ayat>((element) {
+      return Ayat(
+        noSurat: noSurat,
+        noAyat: element['number'],
+        text: element['text'],
+        terjemah: element['translation_id'],
+        tafsir:
+            surats[noSurat -
+                1]['tafsir']['id']['kemenag']['text']['${element['number']}'],
+      );
+    }).toList();
   }
 
   @override
