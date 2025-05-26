@@ -1,17 +1,14 @@
 import 'dart:convert';
-import 'package:quran_clean/core/utils/formater.dart';
 import 'package:xml/xml.dart';
-
 import '../../domain/models/ayat.dart';
 import '../../domain/models/juz.dart';
 import '../../domain/models/surat.dart';
 import '../../domain/repositories/quran_repository.dart';
-import '../datasources/audio_remote_datasource.dart';
+
 import '../datasources/quran_local_datasource.dart';
 
 class QuranRepositoryImpl implements QuranRepository {
   final localData = QuranLocalDatasource();
-  final remoteAudio = AudioRemoteDatasource();
 
   @override
   Future<Ayat> findAyat(int noSurat, int noAyat) {
@@ -95,24 +92,5 @@ class QuranRepositoryImpl implements QuranRepository {
     final noSurat = savedAyat['no_surat'] as int? ?? 0;
     final noAyat = savedAyat['no_ayat'] as int? ?? 0;
     return [noSurat, noAyat];
-  }
-
-  @override
-  Future<void> playAudioAyat(int noSurat, int noAyat) async {
-    final noSuratStr = Formater.numberFormatToURL(noSurat);
-    final noAyatStr = Formater.numberFormatToURL(noAyat);
-    final audioURL =
-        'https://everyayah.com/data/Hani_Rifai_192kbps/$noSuratStr$noAyatStr.mp3'; // choice
-    await remoteAudio.playAudio(audioURL);
-  }
-
-  @override
-  Future<void> pausePlayAudio() async {
-    await remoteAudio.pausePlayAudio();
-  }
-
-  @override
-  Future<void> stopAudio() async {
-    await remoteAudio.stopAudio();
   }
 }

@@ -10,7 +10,4 @@ abstract class QuranRepository {
   Future<Ayat> findAyat(int noSurat, int noAyat);
   Future<void> saveLastRead(int noSurat, int noAyat);
   Future<List<int>> getLastRead();
-  Future<void> playAudioAyat(int noSurat, int noAyat);
-  Future<void> pausePlayAudio();
-  Future<void> stopAudio();
 }

@@ -7,7 +7,7 @@ import '../../../../domain/models/surat.dart';
 class TafsirButton extends StatelessWidget {
   final Surat _surat;
   final Ayat _ayat;
-  TafsirButton(this._surat, this._ayat);
+  const TafsirButton(this._surat, this._ayat, {super.key});
 
   @override
   Widget build(BuildContext context) {
