@@ -2,22 +2,22 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:quran_clean/modules/audio/domain/use_cases/pause_play_audio.dart';
-import 'package:quran_clean/modules/quran/domain/use_cases/pause_play_murottal.dart';
+import 'package:quran_clean/modules/audio/domain/usecases/pause_play_audio.dart';
+import 'package:quran_clean/modules/quran/domain/usecases/pause_play_murottal.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../audio/data/repositories/audio_repository_impl.dart';
-import '../../../audio/domain/use_cases/get_audio_player_state.dart';
-import '../../../audio/domain/use_cases/play_audio_url.dart';
-import '../../../audio/domain/use_cases/stop_audio.dart';
+import '../../../audio/domain/usecases/get_audio_player_state.dart';
+import '../../../audio/domain/usecases/play_audio_url.dart';
+import '../../../audio/domain/usecases/stop_audio.dart';
 import '../../data/repositories/quran_repository_impl.dart';
 import '../../domain/models/ayat.dart';
 import '../../domain/models/surat.dart';
-import '../../domain/use_cases/get_murottal_playing.dart';
-import '../../domain/use_cases/get_surat_detail.dart';
-import '../../domain/use_cases/play_murottal_audio.dart';
-import '../../domain/use_cases/save_last_read.dart';
-import '../../domain/use_cases/stop_murottal.dart';
+import '../../domain/usecases/get_murottal_playing.dart';
+import '../../domain/usecases/get_surat_detail.dart';
+import '../../domain/usecases/play_murottal_audio.dart';
+import '../../domain/usecases/save_last_read.dart';
+import '../../domain/usecases/stop_murottal.dart';
 import 'quran_controller.dart';
 
 class SuratDetailController extends GetxController {

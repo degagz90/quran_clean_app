@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import '../../data/repositories/quran_repository_impl.dart';
 import '../../domain/models/juz.dart';
 import '../../domain/models/surat.dart';
-import '../../domain/use_cases/get_last_read.dart';
-import '../../domain/use_cases/get_list_juz.dart';
-import '../../domain/use_cases/get_list_surat.dart';
+import '../../domain/usecases/get_last_read.dart';
+import '../../domain/usecases/get_list_juz.dart';
+import '../../domain/usecases/get_list_surat.dart';
 
 class QuranController extends GetxController {
   final repository = QuranRepositoryImpl();

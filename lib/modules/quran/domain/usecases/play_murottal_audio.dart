@@ -1,5 +1,5 @@
 import '../../../../core/utils/formater.dart';
-import '../../../audio/domain/use_cases/play_audio_url.dart';
+import '../../../audio/domain/usecases/play_audio_url.dart';
 
 class PlayMurottalAudio {
   final PlayAudioUrl _playAudioUrlUseCase;

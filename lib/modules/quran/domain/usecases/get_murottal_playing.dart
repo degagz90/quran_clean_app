@@ -1,5 +1,5 @@
 import 'package:just_audio/just_audio.dart';
-import 'package:quran_clean/modules/audio/domain/use_cases/get_audio_player_state.dart';
+import 'package:quran_clean/modules/audio/domain/usecases/get_audio_player_state.dart';
 
 class GetMurottalPlaying {
   GetAudioPlayerState getAudioPlayerState;

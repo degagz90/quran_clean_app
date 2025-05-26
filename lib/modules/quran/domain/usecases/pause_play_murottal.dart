@@ -1,4 +1,4 @@
-import '../../../audio/domain/use_cases/pause_play_audio.dart';
+import '../../../audio/domain/usecases/pause_play_audio.dart';
 
 class PausePlayMurottal {
   PausePlayAudio _pausePlayAudioUseCase;
