@@ -11,6 +11,22 @@ class PlayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(onPressed: () async {}, icon: Icon(Icons.play_arrow));
+    return IconButton(
+      onPressed: () async {
+        if (controller.playingAyatIndex.value == ayat.noAyat - 1) {
+          controller.pausPlayMurottal();
+        } else {
+          controller.playMurottal(controller.noSurat.value, ayat.noAyat);
+        }
+      },
+      icon: Obx(
+        () => Icon(
+          controller.isPlaying.value &&
+                  controller.playingAyatIndex.value == ayat.noAyat - 1
+              ? Icons.pause
+              : Icons.play_arrow,
+        ),
+      ),
+    );
   }
 }

@@ -29,6 +29,7 @@ class SuratDetailView extends GetView<SuratDetailController> {
             reverse: true,
             controller: controller.pageC,
             onPageChanged: (value) async {
+              await controller.stopMurottal();
               controller.resetPage();
               controller.noSurat.value = value + 1;
               await controller.findSurat();

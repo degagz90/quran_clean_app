@@ -1,16 +1,29 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:quran_clean/modules/audio/domain/use_cases/pause_play_audio.dart';
+import 'package:quran_clean/modules/quran/domain/use_cases/pause_play_murottal.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../../../audio/data/repositories/audio_repository_impl.dart';
+import '../../../audio/domain/use_cases/get_audio_player_state.dart';
+import '../../../audio/domain/use_cases/play_audio_url.dart';
+import '../../../audio/domain/use_cases/stop_audio.dart';
 import '../../data/repositories/quran_repository_impl.dart';
 import '../../domain/models/ayat.dart';
 import '../../domain/models/surat.dart';
-import '../../domain/use_cases/memory_manager.dart';
-import '../../domain/use_cases/quran_loader.dart';
+import '../../domain/use_cases/get_murottal_playing.dart';
+import '../../domain/use_cases/get_surat_detail.dart';
+import '../../domain/use_cases/play_murottal_audio.dart';
+import '../../domain/use_cases/save_last_read.dart';
+import '../../domain/use_cases/stop_murottal.dart';
 import 'quran_controller.dart';
 
 class SuratDetailController extends GetxController {
   final repository = QuranRepositoryImpl();
+  final audioRepository = AudioRepositoryImpl();
+  late final StreamSubscription<ProcessingState> _playerSub;
   RxInt noSurat = 0.obs;
   RxInt noAyat = 0.obs;
   Surat? surat;
@@ -26,17 +39,27 @@ class SuratDetailController extends GetxController {
     noAyat.value = Get.arguments['no_ayat'] ?? 0;
     pageC = PageController(initialPage: noSurat.value - 1);
     super.onInit();
+    final getAudioStateUseCase = GetAudioPlayerState(audioRepository);
+    final getMurotalStateUseCase = GetMurottalPlaying(getAudioStateUseCase);
+    _playerSub = getMurotalStateUseCase.execute().listen((state) {
+      if (state == ProcessingState.completed) {
+        isPlaying.value = false;
+        playingAyatIndex.value = -1;
+      }
+    });
   }
 
   @override
   void onClose() async {
+    await stopMurottal();
     await saveLastRead(noSurat.value, lastReadAyat.value);
     Get.find<QuranController>().getLastRead();
+    _playerSub.cancel();
     super.onClose();
   }
 
   Future<void> findSurat() async {
-    final useCase = QuranLoader(repository);
+    final useCase = GetSuratDetail(repository);
     try {
       surat = await useCase.findSurat(noSurat.value);
     } catch (e) {
@@ -45,7 +68,7 @@ class SuratDetailController extends GetxController {
   }
 
   Future<void> getListAyat() async {
-    final useCase = QuranLoader(repository);
+    final useCase = GetSuratDetail(repository);
     try {
       listAyat = await useCase.getListAyat(noSurat.value);
     } catch (e) {
@@ -70,11 +93,34 @@ class SuratDetailController extends GetxController {
   }
 
   Future<void> saveLastRead(int noSurat, int noAyat) async {
-    final useCase = MemoryManager(repository);
+    final useCase = SaveLastRead(repository);
     try {
-      await useCase.saveLastRead(noSurat, noAyat);
+      await useCase.execute(noSurat, noAyat);
     } catch (e) {
       // print(e);
     }
+  }
+
+  Future<void> playMurottal(int noSurat, int noAyat) async {
+    final playaudioUrlUseCase = PlayAudioUrl(audioRepository);
+    final useCase = PlayMurottalAudio(playaudioUrlUseCase);
+    playingAyatIndex.value = noAyat - 1;
+    isPlaying.value = true;
+    await useCase.execute("hani rifai", noSurat, noAyat);
+  }
+
+  Future<void> stopMurottal() async {
+    final playaudioUrlUseCase = StopAudio(audioRepository);
+    final useCase = StopMurottal(playaudioUrlUseCase);
+    isPlaying.value = false;
+    playingAyatIndex.value = -1;
+    await useCase.execute();
+  }
+
+  Future<void> pausPlayMurottal() async {
+    final playaudioUrlUseCase = PausePlayAudio(audioRepository);
+    final useCase = PausePlayMurottal(playaudioUrlUseCase);
+    isPlaying.value = !isPlaying.value;
+    await useCase.execute();
   }
 }
