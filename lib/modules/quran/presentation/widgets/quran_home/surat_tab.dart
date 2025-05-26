@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controllers/quran_controller.dart';
+import '../../controllers/quran_controller.dart';
 
 class SuratTab extends StatelessWidget {
   const SuratTab({super.key});

@@ -1,14 +1,17 @@
 import 'dart:convert';
+import 'package:quran_clean/core/utils/formater.dart';
 import 'package:xml/xml.dart';
 
 import '../../domain/models/ayat.dart';
 import '../../domain/models/juz.dart';
 import '../../domain/models/surat.dart';
 import '../../domain/repositories/quran_repository.dart';
+import '../datasources/audio_remote_datasource.dart';
 import '../datasources/quran_local_datasource.dart';
 
 class QuranRepositoryImpl implements QuranRepository {
   final localData = QuranLocalDatasource();
+  final remoteAudio = AudioRemoteDatasource();
 
   @override
   Future<Ayat> findAyat(int noSurat, int noAyat) {
@@ -80,14 +83,36 @@ class QuranRepositoryImpl implements QuranRepository {
 
   @override
   Future<void> saveLastRead(int noSurat, int noAyat) async {
-    await localData.savedAyat.write("no_surat", noSurat);
-    await localData.savedAyat.write("no_ayat", noAyat);
+    final Map<String, int> savedAyat = {"no_surat": noSurat, "no_ayat": noAyat};
+    final jsonString = jsonEncode(savedAyat);
+    await localData.writeToStorage("saved_ayat", jsonString);
   }
 
   @override
   Future<List<int>> getLastRead() async {
-    final noSurat = await localData.savedAyat.read("no_surat") ?? 0;
-    final noAyat = await localData.savedAyat.read("no_ayat") ?? 0;
+    final jsonString = await localData.readFromStorage("saved_ayat");
+    final Map<String, dynamic> savedAyat = jsonDecode(jsonString);
+    final noSurat = savedAyat['no_surat'] as int? ?? 0;
+    final noAyat = savedAyat['no_ayat'] as int? ?? 0;
     return [noSurat, noAyat];
+  }
+
+  @override
+  Future<void> playAudioAyat(int noSurat, int noAyat) async {
+    final noSuratStr = Formater.numberFormatToURL(noSurat);
+    final noAyatStr = Formater.numberFormatToURL(noAyat);
+    final audioURL =
+        'https://everyayah.com/data/Hani_Rifai_192kbps/$noSuratStr$noAyatStr.mp3'; // choice
+    await remoteAudio.playAudio(audioURL);
+  }
+
+  @override
+  Future<void> pausePlayAudio() async {
+    await remoteAudio.pausePlayAudio();
+  }
+
+  @override
+  Future<void> stopAudio() async {
+    await remoteAudio.stopAudio();
   }
 }

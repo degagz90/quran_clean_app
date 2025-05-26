@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../core/constants/text_styles/app_text.dart';
-import '../controllers/surat_detail_controller.dart';
+import '../../../../../core/constants/text_styles/app_text.dart';
+import '../../controllers/surat_detail_controller.dart';
 
 class SuratHeaderCard extends StatelessWidget {
   const SuratHeaderCard({super.key});

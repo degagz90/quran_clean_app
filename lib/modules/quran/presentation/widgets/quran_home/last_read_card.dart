@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../core/constants/text_styles/app_text.dart';
-import '../controllers/quran_controller.dart';
+import '../../../../../core/constants/text_styles/app_text.dart';
+import '../../controllers/quran_controller.dart';
 
 class QuranLastReadCard extends StatelessWidget {
   const QuranLastReadCard({super.key});

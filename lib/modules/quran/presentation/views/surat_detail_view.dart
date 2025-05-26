@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/surat_detail_controller.dart';
-import '../widgets/ayat_widget.dart';
-import '../widgets/surat_header_card.dart';
+import '../widgets/surat_detail/ayat_widget.dart';
+import '../widgets/surat_detail/surat_header_card.dart';
 
 class SuratDetailView extends GetView<SuratDetailController> {
   const SuratDetailView({super.key});
@@ -29,6 +29,7 @@ class SuratDetailView extends GetView<SuratDetailController> {
             reverse: true,
             controller: controller.pageC,
             onPageChanged: (value) async {
+              await controller.stopAudio();
               controller.resetPage();
               controller.noSurat.value = value + 1;
               await controller.findSurat();

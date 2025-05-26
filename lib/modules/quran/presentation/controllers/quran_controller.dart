@@ -3,9 +3,8 @@ import 'package:get/get.dart';
 import '../../data/repositories/quran_repository_impl.dart';
 import '../../domain/models/juz.dart';
 import '../../domain/models/surat.dart';
-import '../../domain/use_cases/get_last_read.dart';
-import '../../domain/use_cases/load_list_juz.dart';
-import '../../domain/use_cases/load_list_surat.dart';
+import '../../domain/use_cases/memory_manager.dart';
+import '../../domain/use_cases/quran_loader.dart';
 
 class QuranController extends GetxController {
   final repository = QuranRepositoryImpl();
@@ -21,27 +20,27 @@ class QuranController extends GetxController {
   }
 
   Future<void> loadSuratList() async {
-    final useCase = LoadListSurat(repository);
+    final useCase = QuranLoader(repository);
     try {
-      listSurat = await useCase.execute();
+      listSurat = await useCase.getListSurat();
     } catch (e) {
       // print(e);
     }
   }
 
   Future<void> loadJuzList() async {
-    final useCase = LoadListJuz(repository);
+    final useCase = QuranLoader(repository);
     try {
-      listJuz = await useCase.execute();
+      listJuz = await useCase.getListJuz();
     } catch (e) {
       // print(e);
     }
   }
 
   Future<void> getLastRead() async {
-    final useCase = GetLastRead(repository);
+    final useCase = MemoryManager(repository);
     try {
-      final listInt = await useCase.execute();
+      final listInt = await useCase.getLastRead();
       lastSuratNo.value = listInt[0];
       lastAyatNo.value = listInt[1];
       // print("${lastSuratNo.value}, ${lastAyatNo.value}");

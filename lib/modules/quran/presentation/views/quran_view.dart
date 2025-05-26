@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/quran_controller.dart';
-import '../widgets/juz_tab.dart';
-import '../widgets/last_read_card.dart';
-import '../widgets/surat_tab.dart';
+import '../widgets/quran_home/juz_tab.dart';
+import '../widgets/quran_home/last_read_card.dart';
+import '../widgets/quran_home/surat_tab.dart';
 
 class QuranView extends GetView<QuranController> {
   const QuranView({super.key});

@@ -3,8 +3,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:xml/xml.dart';
 
 class QuranLocalDatasource {
-  final savedAyat = GetStorage();
-
   Future<String> loadQuranJson() async {
     return await rootBundle.loadString('assets/jsons/quran.json');
   }
@@ -15,5 +13,15 @@ class QuranLocalDatasource {
     );
     final document = XmlDocument.parse(xmlString);
     return document;
+  }
+
+  Future<void> writeToStorage(String key, String value) async {
+    final box = GetStorage();
+    await box.write(key, value);
+  }
+
+  Future<String> readFromStorage(String key) async {
+    final box = GetStorage();
+    return await box.read(key);
   }
 }
