@@ -9,6 +9,8 @@ class PlayMurottalAudio {
   Future<void> execute(String qari, int noSurat, int noAyat) async {
     final qariUrl = switch (qari.toLowerCase()) {
       "hani rifai" => "Hani_Rifai_192kbps",
+      "ash shatree" => "Abu_Bakr_Ash-Shaatree_128kbps",
+      "alafasy" => "Alafasy_128kbps",
       _ => "Hani_Rifai_192kbps",
     };
     final noSuratUrl = Formater.numberFormatToURL(noSurat);

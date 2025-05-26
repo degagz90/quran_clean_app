@@ -28,8 +28,9 @@ class _AyatWidgetState extends State<AyatWidget> {
       if (index >= 0) {
         itemScrollC.scrollTo(
           index: index,
-          duration: const Duration(milliseconds: 1000),
+          duration: const Duration(milliseconds: 500),
           curve: Curves.easeInOut,
+          alignment: 0.1,
         );
       }
     });

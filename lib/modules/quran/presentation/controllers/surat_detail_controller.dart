@@ -41,10 +41,16 @@ class SuratDetailController extends GetxController {
     super.onInit();
     final getAudioStateUseCase = GetAudioPlayerState(audioRepository);
     final getMurotalStateUseCase = GetMurottalPlaying(getAudioStateUseCase);
-    _playerSub = getMurotalStateUseCase.execute().listen((state) {
+    _playerSub = getMurotalStateUseCase.execute().listen((state) async {
       if (state == ProcessingState.completed) {
-        isPlaying.value = false;
-        playingAyatIndex.value = -1;
+        if (isPlaying.value && playingAyatIndex.value + 1 < surat!.jmlAyat) {
+          // Next ayat
+          final nextAyat = playingAyatIndex.value + 2;
+          await playMurottal(noSurat.value, nextAyat);
+        } else {
+          isPlaying.value = false;
+          playingAyatIndex.value = -1;
+        }
       }
     });
   }
@@ -95,7 +101,7 @@ class SuratDetailController extends GetxController {
   Future<void> saveLastRead(int noSurat, int noAyat) async {
     final useCase = SaveLastRead(repository);
     try {
-      await useCase.execute(noSurat, noAyat);
+      await useCase.execute(noSurat, lastReadAyat.value);
     } catch (e) {
       // print(e);
     }
@@ -106,7 +112,8 @@ class SuratDetailController extends GetxController {
     final useCase = PlayMurottalAudio(playaudioUrlUseCase);
     playingAyatIndex.value = noAyat - 1;
     isPlaying.value = true;
-    await useCase.execute("hani rifai", noSurat, noAyat);
+    await useCase.execute("ash shatree", noSurat, noAyat);
+    print('object');
   }
 
   Future<void> stopMurottal() async {
