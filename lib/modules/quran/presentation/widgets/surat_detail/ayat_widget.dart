@@ -8,45 +8,18 @@ import '../../controllers/surat_detail_controller.dart';
 import 'ayat_widget_buttons/play_button.dart';
 import 'ayat_widget_buttons/tafsir_button.dart';
 
-class AyatWidget extends StatefulWidget {
+class AyatWidget extends StatelessWidget {
   const AyatWidget({super.key});
 
   @override
-  State<AyatWidget> createState() => _AyatWidgetState();
-}
-
-class _AyatWidgetState extends State<AyatWidget> {
-  final controller = Get.find<SuratDetailController>();
-  final itemScrollC = ItemScrollController();
-  final itemPosC = ItemPositionsListener.create();
-  late Worker _scrollWorker;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollWorker = ever(controller.playingAyatIndex, (int index) {
-      if (index >= 0 && index < controller.listAyat.length) {
-        itemScrollC.scrollTo(
-          index: index,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.decelerate,
-        );
-      }
-    });
+  Widget build(BuildContext context) {
+    final controller = Get.find<SuratDetailController>();
+    final itemScrollC = ItemScrollController();
+    final itemPosC = ItemPositionsListener.create();
     itemPosC.itemPositions.addListener(() {
       final positions = itemPosC.itemPositions.value;
       controller.findLastRead(positions);
     });
-  }
-
-  @override
-  void dispose() {
-    _scrollWorker.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (controller.noAyat.value != 0) {
         itemScrollC.jumpTo(index: controller.noAyat.value - 1);

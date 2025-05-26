@@ -11,9 +11,6 @@ class PlayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () async {},
-      icon: Obx(() => Icon(Icons.play_arrow)),
-    );
+    return IconButton(onPressed: () async {}, icon: Icon(Icons.play_arrow));
   }
 }
