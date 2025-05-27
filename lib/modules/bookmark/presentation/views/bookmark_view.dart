@@ -39,7 +39,7 @@ class BookmarkView extends GetView<BookmarkController> {
                       title: Text(
                         'QS. ${bookmark.suratName} ayat ${bookmark.noAyat}',
                       ),
-                      subtitle: Text('${bookmark.timeStamp}'),
+                      subtitle: Text(bookmark.timeStamp),
                       onTap: () {
                         final timeStamp = Formater.timeStamp(DateTime.now());
                         controller.textC.text = bookmark.catatan;

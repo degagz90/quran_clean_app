@@ -5,11 +5,6 @@ class IsBookmarked {
   IsBookmarked(this.repository);
 
   Future<bool> execute(int noSurat, int noAyat) async {
-    try {
-      return await repository.isBookmarked(noSurat, noAyat);
-    } on Exception catch (e) {
-      print(e);
-      return false;
-    }
+    return await repository.isBookmarked(noSurat, noAyat);
   }
 }

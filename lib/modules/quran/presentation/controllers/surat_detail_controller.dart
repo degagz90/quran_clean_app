@@ -155,13 +155,9 @@ class SuratDetailController extends GetxController {
     String catatan,
     String timeStamp,
   ) async {
-    try {
-      final addBookmarkUseCase = AddBookmark(bookmarkRepository);
-      final useCase = AyatToBookmark(addBookmarkUseCase);
-      await useCase.execute(suratName, noSurat, noAyat, catatan, timeStamp);
-    } on Exception catch (e) {
-      print(e);
-    }
+    final addBookmarkUseCase = AddBookmark(bookmarkRepository);
+    final useCase = AyatToBookmark(addBookmarkUseCase);
+    await useCase.execute(suratName, noSurat, noAyat, catatan, timeStamp);
   }
 
   Future<bool> isBookmarked(int noSurat, int noAyat) async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quran_clean/core/constants/colors/app_colors.dart';
 import 'package:quran_clean/modules/quran/presentation/controllers/surat_detail_controller.dart';
 
 import '../../../../../../core/constants/text_styles/app_text.dart';
@@ -35,7 +36,7 @@ class _BookmarkButtonState extends State<BookmarkButton> {
               );
               controller.textEditC.text = bookmark.catatan;
               Get.defaultDialog(
-                buttonColor: Theme.of(context).primaryColor,
+                buttonColor: AppColors.ungu2,
                 textConfirm: 'edit',
                 textCancel: 'hapus',
                 barrierDismissible: true,
@@ -49,7 +50,7 @@ class _BookmarkButtonState extends State<BookmarkButton> {
                   await controller.deleteBookmark(bookmark);
                 },
                 title: "QS. ${bookmark.suratName}: ${bookmark.noAyat}",
-                titleStyle: TextStyle(color: Theme.of(context).primaryColor),
+                titleStyle: TextStyle(color: AppColors.ungu2),
                 content: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
