@@ -34,6 +34,7 @@ class SuratDetailController extends GetxController {
   Surat? surat;
   List<Ayat> listAyat = [];
   PageController pageC = PageController();
+  TextEditingController textC = TextEditingController();
   RxInt lastReadAyat = 0.obs;
   RxBool isPlaying = false.obs;
   RxInt playingAyatIndex = (-1).obs;
@@ -142,8 +143,12 @@ class SuratDetailController extends GetxController {
     String catatan,
     String timeStamp,
   ) async {
-    final addBookmarkUseCase = AddBookmark(bookmarkRepository);
-    final useCase = AyatToBookmark(addBookmarkUseCase);
-    await useCase.execute(suratName, noSurat, noAyat, catatan, timeStamp);
+    try {
+      final addBookmarkUseCase = AddBookmark(bookmarkRepository);
+      final useCase = AyatToBookmark(addBookmarkUseCase);
+      await useCase.execute(suratName, noSurat, noAyat, catatan, timeStamp);
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 }

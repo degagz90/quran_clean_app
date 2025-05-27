@@ -40,7 +40,7 @@ class BookmarkLocalDatasource {
             .toList(),
       );
     } catch (e) {
-      print(e);
+      print('gagal menulis ke storage: $e');
     }
   }
 }

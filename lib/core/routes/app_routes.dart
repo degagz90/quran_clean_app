@@ -1,5 +1,6 @@
 class AppRoutes {
-  static const home = '/home';
+  static const home = '/';
   static const quran = '/quran';
-  static const suratDetail = '/surat_detail';
+  static const suratDetail = '/quran/surat_detail';
+  static const bookmark = '/bookmark';
 }

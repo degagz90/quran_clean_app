@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Quran App',
-      initialRoute: '/home',
+      initialRoute: '/',
       getPages: AppPages.routes,
       theme: AppTheme.lightTheme,
     );

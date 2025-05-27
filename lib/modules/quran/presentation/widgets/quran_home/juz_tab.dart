@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../../core/routes/app_routes.dart';
 import '../../controllers/quran_controller.dart';
 
 class JuzTab extends StatelessWidget {
@@ -15,7 +16,7 @@ class JuzTab extends StatelessWidget {
         return ListTile(
           onTap: () {
             Get.toNamed(
-              "/surat_detail",
+              AppRoutes.suratDetail,
               arguments: {
                 'no_surat': juz.startSuratNo,
                 'no_ayat': juz.startAyatNo,

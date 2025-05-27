@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../../../core/constants/text_styles/app_text.dart';
+import '../../../../../core/routes/app_routes.dart';
 import '../../controllers/quran_controller.dart';
 
 class QuranLastReadCard extends StatelessWidget {
@@ -18,7 +20,7 @@ class QuranLastReadCard extends StatelessWidget {
           child: InkWell(
             onTap: () {
               Get.toNamed(
-                '/surat_detail',
+                AppRoutes.suratDetail,
                 arguments: {
                   'no_surat': controller.lastSuratNo.value,
                   'no_ayat': controller.lastAyatNo.value,

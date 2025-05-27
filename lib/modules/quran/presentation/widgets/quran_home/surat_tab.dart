@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../../core/routes/app_routes.dart';
 import '../../controllers/quran_controller.dart';
 
 class SuratTab extends StatelessWidget {
@@ -16,7 +17,7 @@ class SuratTab extends StatelessWidget {
         final surat = controller.listSurat[index];
         return ListTile(
           onTap: () => Get.toNamed(
-            '/surat_detail',
+            AppRoutes.suratDetail,
             arguments: {'no_surat': surat.noSurat},
           ),
           leading: CircleAvatar(child: Text('${surat.noSurat}')),
