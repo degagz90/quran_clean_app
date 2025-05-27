@@ -7,59 +7,117 @@ import '../../../../../../core/utils/formater.dart';
 import '../../../../domain/models/ayat.dart';
 import '../../../../domain/models/surat.dart';
 
-class BookmarkButton extends StatelessWidget {
+class BookmarkButton extends StatefulWidget {
   final Surat surat;
   final Ayat ayat;
+  const BookmarkButton({required this.surat, required this.ayat, super.key});
+
+  @override
+  State<BookmarkButton> createState() => _BookmarkButtonState();
+}
+
+class _BookmarkButtonState extends State<BookmarkButton> {
   final controller = Get.find<SuratDetailController>();
-  BookmarkButton({required this.surat, required this.ayat, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        final timeStamp = Formater.timeStamp(DateTime.now());
-        Get.defaultDialog(
-          buttonColor: Theme.of(context).primaryColor,
-          textConfirm: 'add',
-          textCancel: 'cancel',
-          barrierDismissible: false,
-          onConfirm: () async {
-            await controller.addBookmark(
-              surat.name,
-              surat.noSurat,
-              ayat.noAyat,
-              controller.textC.text,
-              timeStamp,
-            );
-            controller.textC.text = '';
-            Get.back(canPop: false);
-          },
-          onCancel: () {},
-          title: "QS. ${surat.name}: ${ayat.noAyat}",
-          titleStyle: TextStyle(color: Theme.of(context).primaryColor),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(timeStamp, style: AppText.subtitleText),
-              Divider(),
-              Text('Tambahkan Catatan:', style: AppText.subtitleText),
-              TextField(
-                controller: controller.textC,
-                autocorrect: false,
-                autofocus: true,
-                minLines: 1,
-                maxLines: 10,
-                textInputAction: TextInputAction.newline,
-                decoration: InputDecoration(
-                  hintText: 'mulai mengetik',
-                  hintStyle: TextStyle(color: Colors.grey),
+    return FutureBuilder(
+      future: controller.isBookmarked(widget.surat.noSurat, widget.ayat.noAyat),
+      builder: (context, snapshot) {
+        final isBookmarked = snapshot.data ?? false;
+        return IconButton(
+          onPressed: () async {
+            final timeStamp = Formater.timeStamp(DateTime.now());
+            if (isBookmarked) {
+              var bookmark = await controller.findBookmark(
+                widget.surat.noSurat,
+                widget.ayat.noAyat,
+              );
+              controller.textEditC.text = bookmark.catatan;
+              Get.defaultDialog(
+                buttonColor: Theme.of(context).primaryColor,
+                textConfirm: 'edit',
+                textCancel: 'hapus',
+                barrierDismissible: true,
+                onConfirm: () async {
+                  bookmark.catatan = controller.textEditC.text;
+                  bookmark.timeStamp = timeStamp;
+                  await controller.editBookmark(bookmark);
+                  Get.back(canPop: false);
+                },
+                onCancel: () async {
+                  await controller.deleteBookmark(bookmark);
+                },
+                title: "QS. ${bookmark.suratName}: ${bookmark.noAyat}",
+                titleStyle: TextStyle(color: Theme.of(context).primaryColor),
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(timeStamp, style: AppText.subtitleText),
+                    Divider(),
+                    Text('Tambahkan Catatan:', style: AppText.subtitleText),
+                    TextField(
+                      controller: controller.textEditC,
+                      autocorrect: false,
+                      autofocus: true,
+                      minLines: 1,
+                      maxLines: 10,
+                      textInputAction: TextInputAction.newline,
+                      decoration: InputDecoration(
+                        hintText: 'mulai mengetik',
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              );
+            } else {
+              Get.defaultDialog(
+                buttonColor: Theme.of(context).primaryColor,
+                textConfirm: 'tambah',
+                barrierDismissible: true,
+                onConfirm: () async {
+                  Get.back(canPop: false);
+                  await controller.addBookmark(
+                    widget.surat.name,
+                    widget.surat.noSurat,
+                    widget.ayat.noAyat,
+                    controller.textAddC.text,
+                    timeStamp,
+                  );
+                  controller.textAddC.text = '';
+                },
+                title: "QS. ${widget.surat.name}: ${widget.ayat.noAyat}",
+                titleStyle: TextStyle(color: Theme.of(context).primaryColor),
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(timeStamp, style: AppText.subtitleText),
+                    Divider(),
+                    Text('Tambahkan Catatan:', style: AppText.subtitleText),
+                    TextField(
+                      controller: controller.textAddC,
+                      autocorrect: false,
+                      autofocus: true,
+                      minLines: 1,
+                      maxLines: 10,
+                      textInputAction: TextInputAction.newline,
+                      decoration: InputDecoration(
+                        hintText: 'mulai mengetik',
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+            setState(() {});
+          },
+          icon: Icon(
+            isBookmarked ? Icons.bookmark_added : Icons.bookmark_border,
           ),
         );
       },
-      icon: Icon(Icons.bookmark_border),
     );
   }
 }

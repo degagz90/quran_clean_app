@@ -6,4 +6,5 @@ abstract class BookmarkRepository {
   Future<void> editBookmark(Bookmark bookmark);
   Future<List<Bookmark>> getBookmarks();
   Future<bool> isBookmarked(int noSurat, int noAyat);
+  Future<Bookmark> findBookmark(int noSurat, int noAyat);
 }

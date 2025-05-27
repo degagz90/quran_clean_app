@@ -1,12 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quran_clean/modules/bookmark/domain/usecases/delete_bookmark.dart';
 
+import '../../domain/usecases/delete_bookmark.dart';
+import '../../domain/usecases/edit_bookmark.dart';
 import '../../data/repositories/bookmark_repository_impl.dart';
 import '../../domain/model/bookmark.dart';
 import '../../domain/usecases/get_bookmarks.dart';
 
 class BookmarkController extends GetxController {
   final bookmarkRepository = BookmarkRepositoryImpl();
+  final textC = TextEditingController();
   RxList<Bookmark> bookmarks = <Bookmark>[].obs;
 
   @override
@@ -22,6 +25,12 @@ class BookmarkController extends GetxController {
 
   Future<void> deleteBookmark(Bookmark bookmark) async {
     final useCase = DeleteBookmark(bookmarkRepository);
+    await useCase.execute(bookmark);
+    await getBookmarks();
+  }
+
+  Future<void> editBookmark(Bookmark bookmark) async {
+    final useCase = EditBookmark(bookmarkRepository);
     await useCase.execute(bookmark);
     await getBookmarks();
   }

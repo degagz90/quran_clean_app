@@ -12,7 +12,7 @@ class AyatToBookmark {
     String catatan,
     String timeStamp,
   ) async {
-    final bookmark = Bookmark(
+    Bookmark bookmark = Bookmark(
       suratName: suratName,
       noSurat: noSurat,
       noAyat: noAyat,

@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:quran_clean/modules/bookmark/domain/usecases/delete_bookmark.dart';
+import 'package:quran_clean/modules/bookmark/domain/usecases/edit_bookmark.dart';
+import 'package:quran_clean/modules/quran/domain/usecases/delete_ayat_bookmark.dart';
+import 'package:quran_clean/modules/quran/domain/usecases/edit_ayat_bookmark.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../audio/data/repositories/audio_repository_impl.dart';
@@ -11,13 +15,18 @@ import '../../../audio/domain/usecases/pause_play_audio.dart';
 import '../../../audio/domain/usecases/play_audio_url.dart';
 import '../../../audio/domain/usecases/stop_audio.dart';
 import '../../../bookmark/data/repositories/bookmark_repository_impl.dart';
+import '../../../bookmark/domain/model/bookmark.dart';
 import '../../../bookmark/domain/usecases/add_bookmark.dart';
+import '../../../bookmark/domain/usecases/find_bookmark.dart';
+import '../../../bookmark/domain/usecases/is_bookmarked.dart';
 import '../../data/repositories/quran_repository_impl.dart';
 import '../../domain/models/ayat.dart';
 import '../../domain/models/surat.dart';
 import '../../domain/usecases/ayat_to_bookmark.dart';
+import '../../domain/usecases/find_bookmark_by_ayat.dart';
 import '../../domain/usecases/get_murottal_playing.dart';
 import '../../domain/usecases/get_surat_detail.dart';
+import '../../domain/usecases/is_ayat_bookmarked.dart';
 import '../../domain/usecases/pause_play_murottal.dart';
 import '../../domain/usecases/play_murottal_audio.dart';
 import '../../domain/usecases/save_last_read.dart';
@@ -34,7 +43,8 @@ class SuratDetailController extends GetxController {
   Surat? surat;
   List<Ayat> listAyat = [];
   PageController pageC = PageController();
-  TextEditingController textC = TextEditingController();
+  TextEditingController textAddC = TextEditingController();
+  TextEditingController textEditC = TextEditingController();
   RxInt lastReadAyat = 0.obs;
   RxBool isPlaying = false.obs;
   RxInt playingAyatIndex = (-1).obs;
@@ -44,7 +54,7 @@ class SuratDetailController extends GetxController {
     noSurat.value = Get.arguments['no_surat'];
     noAyat.value = Get.arguments['no_ayat'] ?? 0;
     pageC = PageController(initialPage: noSurat.value - 1);
-    super.onInit();
+
     final getAudioStateUseCase = GetAudioPlayerState(audioRepository);
     final getMurotalStateUseCase = GetMurottalPlaying(getAudioStateUseCase);
     _playerSub = getMurotalStateUseCase.execute().listen((state) async {
@@ -59,6 +69,8 @@ class SuratDetailController extends GetxController {
         }
       }
     });
+
+    super.onInit();
   }
 
   @override
@@ -150,5 +162,29 @@ class SuratDetailController extends GetxController {
     } on Exception catch (e) {
       print(e);
     }
+  }
+
+  Future<bool> isBookmarked(int noSurat, int noAyat) async {
+    final isBookmarkedUseCase = IsBookmarked(bookmarkRepository);
+    final useCase = IsAyatBookmarked(isBookmarkedUseCase);
+    return await useCase.execute(noSurat, noAyat);
+  }
+
+  Future<Bookmark> findBookmark(int noSurat, int noAyat) async {
+    final findBookmarkUseCase = FindBookmark(bookmarkRepository);
+    final useCase = FindBookmarkByAyat(findBookmarkUseCase);
+    return await useCase.execute(noSurat, noAyat);
+  }
+
+  Future<void> editBookmark(Bookmark bookmark) async {
+    final editBookmarkUseCase = EditBookmark(bookmarkRepository);
+    final useCase = EditAyatBookmark(editBookmarkUseCase);
+    await useCase.execute(bookmark);
+  }
+
+  Future<void> deleteBookmark(Bookmark bookmark) async {
+    final deleteBookmarkUseCase = DeleteBookmark(bookmarkRepository);
+    final useCase = DeleteAyatBookmark(deleteBookmarkUseCase);
+    await useCase.execute(bookmark);
   }
 }

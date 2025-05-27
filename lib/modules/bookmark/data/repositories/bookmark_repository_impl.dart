@@ -7,14 +7,14 @@ class BookmarkRepositoryImpl implements BookmarkRepository {
 
   @override
   Future<void> addBookmark(Bookmark bookmark) async {
-    final bookmarks = await _lokalData.readBookmarks();
+    List<Bookmark> bookmarks = await _lokalData.readBookmarks();
     bookmarks.add(bookmark);
     await _lokalData.writeBookmarks(bookmarks);
   }
 
   @override
   Future<void> deleteBookmark(Bookmark bookmark) async {
-    final bookmarks = await _lokalData.readBookmarks();
+    List<Bookmark> bookmarks = await _lokalData.readBookmarks();
     bookmarks.removeWhere(
       (element) =>
           element.noSurat == bookmark.noSurat &&
@@ -25,7 +25,7 @@ class BookmarkRepositoryImpl implements BookmarkRepository {
 
   @override
   Future<void> editBookmark(Bookmark bookmark) async {
-    final bookmarks = await _lokalData.readBookmarks();
+    List<Bookmark> bookmarks = await _lokalData.readBookmarks();
     final index = bookmarks.indexWhere(
       (element) =>
           element.noSurat == bookmark.noSurat &&
@@ -37,15 +37,24 @@ class BookmarkRepositoryImpl implements BookmarkRepository {
 
   @override
   Future<List<Bookmark>> getBookmarks() async {
-    final bookmarks = await _lokalData.readBookmarks();
+    List<Bookmark> bookmarks = await _lokalData.readBookmarks();
     return bookmarks;
   }
 
   @override
   Future<bool> isBookmarked(int noSurat, int noAyat) async {
-    final bookmarks = await _lokalData.readBookmarks();
+    List<Bookmark> bookmarks = await _lokalData.readBookmarks();
     return bookmarks.any(
       (element) => element.noSurat == noSurat && element.noAyat == noAyat,
     );
+  }
+
+  @override
+  Future<Bookmark> findBookmark(int noSurat, int noAyat) async {
+    List<Bookmark> bookmarks = await _lokalData.readBookmarks();
+    Bookmark bookmark = bookmarks.firstWhere((element) {
+      return element.noSurat == noSurat && element.noAyat == noAyat;
+    });
+    return bookmark;
   }
 }

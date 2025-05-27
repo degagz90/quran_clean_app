@@ -2,8 +2,8 @@ class Bookmark {
   final String suratName;
   final int noSurat;
   final int noAyat;
-  final String catatan;
-  final String timeStamp;
+  String catatan;
+  String timeStamp;
 
   Bookmark({
     required this.suratName,
