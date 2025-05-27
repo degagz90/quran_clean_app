@@ -14,7 +14,7 @@ class PlayButton extends StatelessWidget {
     return IconButton(
       onPressed: () async {
         if (controller.playingAyatIndex.value == ayat.noAyat - 1) {
-          controller.pausPlayMurottal();
+          controller.pausePlayMurottal();
         } else {
           controller.playMurottal(controller.noSurat.value, ayat.noAyat);
         }

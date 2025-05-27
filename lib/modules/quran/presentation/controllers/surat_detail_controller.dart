@@ -1,28 +1,33 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:quran_clean/modules/audio/domain/usecases/pause_play_audio.dart';
-import 'package:quran_clean/modules/quran/domain/usecases/pause_play_murottal.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../audio/data/repositories/audio_repository_impl.dart';
 import '../../../audio/domain/usecases/get_audio_player_state.dart';
+import '../../../audio/domain/usecases/pause_play_audio.dart';
 import '../../../audio/domain/usecases/play_audio_url.dart';
 import '../../../audio/domain/usecases/stop_audio.dart';
+import '../../../bookmark/data/repositories/bookmark_repository_impl.dart';
+import '../../../bookmark/domain/usecases/add_bookmark.dart';
 import '../../data/repositories/quran_repository_impl.dart';
 import '../../domain/models/ayat.dart';
 import '../../domain/models/surat.dart';
+import '../../domain/usecases/ayat_to_bookmark.dart';
 import '../../domain/usecases/get_murottal_playing.dart';
 import '../../domain/usecases/get_surat_detail.dart';
+import '../../domain/usecases/pause_play_murottal.dart';
 import '../../domain/usecases/play_murottal_audio.dart';
 import '../../domain/usecases/save_last_read.dart';
 import '../../domain/usecases/stop_murottal.dart';
 import 'quran_controller.dart';
 
 class SuratDetailController extends GetxController {
-  final repository = QuranRepositoryImpl();
+  final quranRepository = QuranRepositoryImpl();
   final audioRepository = AudioRepositoryImpl();
+  final bookmarkRepository = BookmarkRepositoryImpl();
   late final StreamSubscription<ProcessingState> _playerSub;
   RxInt noSurat = 0.obs;
   RxInt noAyat = 0.obs;
@@ -65,7 +70,7 @@ class SuratDetailController extends GetxController {
   }
 
   Future<void> findSurat() async {
-    final useCase = GetSuratDetail(repository);
+    final useCase = GetSuratDetail(quranRepository);
     try {
       surat = await useCase.findSurat(noSurat.value);
     } catch (e) {
@@ -74,7 +79,7 @@ class SuratDetailController extends GetxController {
   }
 
   Future<void> getListAyat() async {
-    final useCase = GetSuratDetail(repository);
+    final useCase = GetSuratDetail(quranRepository);
     try {
       listAyat = await useCase.getListAyat(noSurat.value);
     } catch (e) {
@@ -99,7 +104,7 @@ class SuratDetailController extends GetxController {
   }
 
   Future<void> saveLastRead(int noSurat, int noAyat) async {
-    final useCase = SaveLastRead(repository);
+    final useCase = SaveLastRead(quranRepository);
     try {
       await useCase.execute(noSurat, lastReadAyat.value);
     } catch (e) {
@@ -113,7 +118,6 @@ class SuratDetailController extends GetxController {
     playingAyatIndex.value = noAyat - 1;
     isPlaying.value = true;
     await useCase.execute("ash shatree", noSurat, noAyat);
-    print('object');
   }
 
   Future<void> stopMurottal() async {
@@ -124,10 +128,22 @@ class SuratDetailController extends GetxController {
     await useCase.execute();
   }
 
-  Future<void> pausPlayMurottal() async {
+  Future<void> pausePlayMurottal() async {
     final playaudioUrlUseCase = PausePlayAudio(audioRepository);
     final useCase = PausePlayMurottal(playaudioUrlUseCase);
     isPlaying.value = !isPlaying.value;
     await useCase.execute();
+  }
+
+  Future<void> addBookmark(
+    String suratName,
+    int noSurat,
+    int noAyat,
+    String catatan,
+    String timeStamp,
+  ) async {
+    final addBookmarkUseCase = AddBookmark(bookmarkRepository);
+    final useCase = AyatToBookmark(addBookmarkUseCase);
+    await useCase.execute(suratName, noSurat, noAyat, catatan, timeStamp);
   }
 }

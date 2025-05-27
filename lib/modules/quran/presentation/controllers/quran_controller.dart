@@ -46,7 +46,7 @@ class QuranController extends GetxController {
       lastAyatNo.value = listInt[1];
       // print("${lastSuratNo.value}, ${lastAyatNo.value}");
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 }

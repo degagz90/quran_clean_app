@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quran_clean/modules/quran/presentation/widgets/surat_detail/ayat_widget_buttons/bookmark_button.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../../core/constants/colors/app_colors.dart';
@@ -58,6 +59,7 @@ class _AyatWidgetState extends State<AyatWidget> {
       itemPositionsListener: itemPosC,
       itemBuilder: (context, index) {
         final ayat = controller.listAyat[index];
+        final surat = controller.surat!;
         return Column(
           children: [
             Container(
@@ -86,12 +88,9 @@ class _AyatWidgetState extends State<AyatWidget> {
                     child: Row(
                       children: [
                         PlayButton(ayat: ayat),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.bookmark_border),
-                        ),
+                        BookmarkButton(surat: surat, ayat: ayat),
                         IconButton(onPressed: () {}, icon: Icon(Icons.share)),
-                        TafsirButton(controller.surat!, ayat),
+                        TafsirButton(surat, ayat),
                       ],
                     ),
                   ),
