@@ -15,8 +15,8 @@ class QuranController extends GetxController {
   RxInt lastAyatNo = 0.obs;
 
   @override
-  void onInit() async {
-    await getLastRead();
+  void onInit() {
+    getLastRead();
     super.onInit();
   }
 

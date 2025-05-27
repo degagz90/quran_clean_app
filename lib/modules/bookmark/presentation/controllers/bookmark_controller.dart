@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
-import 'package:quran_clean/modules/bookmark/data/repositories/bookmark_repository_impl.dart';
-import 'package:quran_clean/modules/bookmark/domain/model/bookmark.dart';
-import 'package:quran_clean/modules/bookmark/domain/usecases/get_bookmarks.dart';
+import 'package:quran_clean/modules/bookmark/domain/usecases/delete_bookmark.dart';
+
+import '../../data/repositories/bookmark_repository_impl.dart';
+import '../../domain/model/bookmark.dart';
+import '../../domain/usecases/get_bookmarks.dart';
 
 class BookmarkController extends GetxController {
   final bookmarkRepository = BookmarkRepositoryImpl();
@@ -16,5 +18,11 @@ class BookmarkController extends GetxController {
   Future<void> getBookmarks() async {
     final useCase = GetBookmarks(bookmarkRepository);
     bookmarks.value = await useCase.execute();
+  }
+
+  Future<void> deleteBookmark(Bookmark bookmark) async {
+    final useCase = DeleteBookmark(bookmarkRepository);
+    await useCase.execute(bookmark);
+    await getBookmarks();
   }
 }

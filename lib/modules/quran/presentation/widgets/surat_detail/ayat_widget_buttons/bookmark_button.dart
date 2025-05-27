@@ -23,8 +23,8 @@ class BookmarkButton extends StatelessWidget {
           textConfirm: 'add',
           textCancel: 'cancel',
           barrierDismissible: false,
-          onConfirm: () {
-            controller.addBookmark(
+          onConfirm: () async {
+            await controller.addBookmark(
               surat.name,
               surat.noSurat,
               ayat.noAyat,
