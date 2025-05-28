@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quran_clean/core/constants/colors/app_colors.dart';
 
-import '../../../../core/routes/app_routes.dart';
+import 'package:quran_clean/core/routes/app_routes.dart';
+
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -12,14 +14,58 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       bottomNavigationBar: Obx(
         () => NavigationBar(
-          animationDuration: Duration(milliseconds: 800),
-          shadowColor: Colors.purpleAccent,
-          indicatorColor: Theme.of(context).primaryColor.withAlpha(100),
+          animationDuration: Duration(milliseconds: 500),
+          indicatorColor: AppColors.ungu2,
+          labelTextStyle: WidgetStatePropertyAll(
+            TextStyle(color: AppColors.ungu2, fontWeight: FontWeight.bold),
+          ),
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           elevation: 15,
+          surfaceTintColor: Colors.white,
           destinations: [
-            NavigationDestination(icon: Icon(Icons.home), label: 'Quran'),
-            NavigationDestination(icon: Icon(Icons.bookmark), label: 'Catatan'),
+            NavigationDestination(
+              selectedIcon: SizedBox(
+                height: 24,
+                width: 24,
+                child: Image.asset(
+                  "assets/icons/quran.png",
+                  color: Colors.white,
+                ),
+              ),
+              icon: SizedBox(
+                height: 24,
+                width: 24,
+                child: Image.asset(
+                  "assets/icons/quran_outlined.png",
+                  color: AppColors.ungu2,
+                ),
+              ),
+              label: 'Quran',
+            ),
+            NavigationDestination(
+              selectedIcon: SizedBox(
+                height: 24,
+                width: 24,
+                child: Image.asset(
+                  "assets/icons/sholat.png",
+                  color: Colors.white,
+                ),
+              ),
+              icon: SizedBox(
+                height: 24,
+                width: 24,
+                child: Image.asset(
+                  "assets/icons/sholat_outlined.png",
+                  color: AppColors.ungu2,
+                ),
+              ),
+              label: 'Sholat',
+            ),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.bookmark, color: Colors.white),
+              icon: Icon(Icons.bookmark_border, color: AppColors.ungu2),
+              label: 'Catatan',
+            ),
           ],
           selectedIndex: controller.tabIndex.value,
           onDestinationSelected: (value) {
@@ -29,6 +75,9 @@ class HomeView extends GetView<HomeController> {
                 Get.rootDelegate.toNamed(AppRoutes.quran);
                 break;
               case 1:
+                Get.rootDelegate.toNamed(AppRoutes.sholat);
+                break;
+              case 2:
                 Get.rootDelegate.toNamed(AppRoutes.bookmark);
                 break;
             }

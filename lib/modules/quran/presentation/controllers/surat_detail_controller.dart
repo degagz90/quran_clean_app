@@ -3,10 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:quran_clean/modules/bookmark/domain/usecases/delete_bookmark.dart';
-import 'package:quran_clean/modules/bookmark/domain/usecases/edit_bookmark.dart';
-import 'package:quran_clean/modules/quran/domain/usecases/delete_ayat_bookmark.dart';
-import 'package:quran_clean/modules/quran/domain/usecases/edit_ayat_bookmark.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../audio/data/repositories/audio_repository_impl.dart';
@@ -17,12 +13,17 @@ import '../../../audio/domain/usecases/stop_audio.dart';
 import '../../../bookmark/data/repositories/bookmark_repository_impl.dart';
 import '../../../bookmark/domain/model/bookmark.dart';
 import '../../../bookmark/domain/usecases/add_bookmark.dart';
+import '../../../bookmark/domain/usecases/delete_bookmark.dart';
+import '../../../bookmark/domain/usecases/edit_bookmark.dart';
 import '../../../bookmark/domain/usecases/find_bookmark.dart';
 import '../../../bookmark/domain/usecases/is_bookmarked.dart';
+import '../../../bookmark/presentation/controllers/bookmark_controller.dart';
 import '../../data/repositories/quran_repository_impl.dart';
 import '../../domain/models/ayat.dart';
 import '../../domain/models/surat.dart';
 import '../../domain/usecases/ayat_to_bookmark.dart';
+import '../../domain/usecases/delete_ayat_bookmark.dart';
+import '../../domain/usecases/edit_ayat_bookmark.dart';
 import '../../domain/usecases/find_bookmark_by_ayat.dart';
 import '../../domain/usecases/get_murottal_playing.dart';
 import '../../domain/usecases/get_surat_detail.dart';
@@ -78,6 +79,7 @@ class SuratDetailController extends GetxController {
     await stopMurottal();
     await saveLastRead(noSurat.value, lastReadAyat.value);
     Get.find<QuranController>().getLastRead();
+    Get.find<BookmarkController>().getBookmarks();
     _playerSub.cancel();
     super.onClose();
   }

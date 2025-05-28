@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import '../bindings/sholat_binding.dart';
+import '../../modules/sholat/presentation/views/sholat_view.dart';
 
 import '../../modules/bookmark/presentation/views/bookmark_view.dart';
 import '../../modules/home/presentation/views/home_view.dart';
@@ -21,6 +23,11 @@ class AppPages {
           name: AppRoutes.quran,
           page: () => QuranView(),
           binding: QuranBinding(),
+        ),
+        GetPage(
+          name: AppRoutes.sholat,
+          page: () => SholatView(),
+          binding: SholatBinding(),
         ),
         GetPage(
           name: AppRoutes.bookmark,

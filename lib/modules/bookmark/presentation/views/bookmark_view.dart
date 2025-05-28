@@ -22,11 +22,7 @@ class BookmarkView extends GetView<BookmarkController> {
           children: [
             Obx(() => Text('Total Catatan: ${controller.bookmarks.length}')),
             SizedBox(height: 8),
-            Text(
-              "(ketuk untuk melihat detail)",
-              style: TextStyle(color: Colors.grey),
-            ),
-            SizedBox(height: 8),
+            Divider(),
             Expanded(
               child: Obx(
                 () => ListView.separated(
@@ -39,7 +35,9 @@ class BookmarkView extends GetView<BookmarkController> {
                       title: Text(
                         'QS. ${bookmark.suratName} ayat ${bookmark.noAyat}',
                       ),
-                      subtitle: Text(bookmark.timeStamp),
+                      subtitle: Text(
+                        "${bookmark.timeStamp}\n(ketuk untuk mengedit)",
+                      ),
                       onTap: () {
                         final timeStamp = Formater.timeStamp(DateTime.now());
                         controller.textC.text = bookmark.catatan;
