@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:quran_clean/modules/sholat/domain/usecases/get_qibla.dart';
 
 import '../../data/repositories/sholat_repository_impl.dart';
 import '../../domain/models/hijri_date.dart';
@@ -17,6 +18,7 @@ class SholatController extends GetxController {
   Rx<HijriDate?> hijriDate = Rx<HijriDate?>(null);
   Rx<WaktuSholat?> waktuSholat = Rx<WaktuSholat?>(null);
   Rx<Duration> countDown = Duration.zero.obs;
+  double arahKiblat = 0;
   int timeZone = 0;
   Timer? _timer2;
   Timer? _timer;
@@ -59,6 +61,7 @@ class SholatController extends GetxController {
   }
 
   Future<void> getLocation() async {
+    if (location.value != null) return;
     final locationUseCase = GetLocation(repository);
     location.value = await locationUseCase.execute();
   }
@@ -77,5 +80,14 @@ class SholatController extends GetxController {
       >= 135 && <= 141 => 9,
       _ => 0,
     };
+  }
+
+  Future<void> getQibla(Location location) async {
+    final getQiblaUseCase = GetQibla(repository);
+    var direction = await getQiblaUseCase.execute(location);
+    if (direction > 180.000000000000) {
+      direction = direction - 360;
+    }
+    arahKiblat = direction;
   }
 }

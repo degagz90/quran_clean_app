@@ -16,10 +16,7 @@ class PrayerTimeWidget extends StatelessWidget {
     final controller = Get.find<SholatController>();
 
     return FutureBuilder(
-      future: () async {
-        await controller.getLocation();
-        await controller.getWaktuSholat();
-      }(),
+      future: controller.getWaktuSholat(),
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());

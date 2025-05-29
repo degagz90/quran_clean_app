@@ -14,4 +14,9 @@ class SholatAdhanDatasource {
 
     return prayerTimes;
   }
+
+  Future<double> getQiblaDirection(double latitude, double longitude) async {
+    Coordinates coordinates = Coordinates(latitude, longitude);
+    return Qibla.qibla(coordinates);
+  }
 }

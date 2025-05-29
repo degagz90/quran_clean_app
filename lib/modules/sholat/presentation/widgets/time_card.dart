@@ -36,7 +36,7 @@ class TimeCard extends StatelessWidget {
                 ),
               ),
               width: 360,
-              height: 120,
+              height: 110,
               padding: EdgeInsets.all(12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
