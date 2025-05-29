@@ -31,6 +31,20 @@ class AppText {
     color: Color(0xFFFFFFFF),
   );
 
+  static const titlePutihText3 = TextStyle(
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.bold,
+    fontSize: 14,
+    color: Color(0xFFFFFFFF),
+  );
+
+  static const jamText = TextStyle(
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.bold,
+    fontSize: 50,
+    color: Color(0xFFFFFFFF),
+  );
+
   static const subtitleText = TextStyle(
     fontFamily: 'Poppins',
     fontWeight: FontWeight.w500,

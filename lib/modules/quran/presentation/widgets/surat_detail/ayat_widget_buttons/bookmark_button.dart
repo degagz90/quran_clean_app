@@ -73,6 +73,7 @@ class _BookmarkButtonState extends State<BookmarkButton> {
                 ),
               );
             } else {
+              controller.textAddC.text = '';
               Get.defaultDialog(
                 buttonColor: Theme.of(context).primaryColor,
                 textConfirm: 'tambah',

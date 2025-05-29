@@ -6,7 +6,7 @@ class BookmarkLocalDatasource {
   final String _bookmarkKey = 'bookmarks';
 
   Future<List<Bookmark>> readBookmarks() async {
-    final List<dynamic> jsonList = _box.read(_bookmarkKey);
+    final List<dynamic> jsonList = _box.read(_bookmarkKey) ?? [];
     return jsonList.map((element) {
       return Bookmark(
         suratName: element["suratName"],
