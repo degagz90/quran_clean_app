@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quran_clean/core/utils/formater.dart';
@@ -14,19 +16,28 @@ class PrayerTimeWidget extends StatelessWidget {
     final controller = Get.find<SholatController>();
 
     return FutureBuilder(
-      future: Future.wait([
-        controller.getLocation(),
-        controller.getWaktuSholat(),
-      ]),
+      future: () async {
+        await controller.getLocation();
+        await controller.getWaktuSholat();
+      }(),
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         }
-        if (controller.location.value == null &&
+        if (controller.location.value == null ||
             controller.waktuSholat.value == null) {
           return Center(child: Text('tidak ada data'));
         }
         var currentLocation = controller.location.value;
+        controller.timeZone = controller.getTimeZone(
+          controller.location.value!.longitude,
+        );
+        String zona = switch (controller.timeZone) {
+          7 => "WIB",
+          8 => "WITA",
+          9 => "WIT",
+          _ => "OK",
+        };
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -61,7 +72,8 @@ class PrayerTimeWidget extends StatelessWidget {
                     Padding(
                       padding: AppPaddings.tablePadding,
                       child: Text(
-                        Formater.jam(controller.waktuSholat.value!.subuhTime),
+                        Formater.jam(controller.waktuSholat.value!.subuhTime) +
+                            " $zona",
                       ),
                     ),
                   ],
@@ -75,7 +87,8 @@ class PrayerTimeWidget extends StatelessWidget {
                     Padding(
                       padding: AppPaddings.tablePadding,
                       child: Text(
-                        Formater.jam(controller.waktuSholat.value!.terbitTime),
+                        Formater.jam(controller.waktuSholat.value!.terbitTime) +
+                            " $zona",
                       ),
                     ),
                   ],
@@ -89,7 +102,8 @@ class PrayerTimeWidget extends StatelessWidget {
                     Padding(
                       padding: AppPaddings.tablePadding,
                       child: Text(
-                        Formater.jam(controller.waktuSholat.value!.dzuhurTime),
+                        Formater.jam(controller.waktuSholat.value!.dzuhurTime) +
+                            " $zona",
                       ),
                     ),
                   ],
@@ -103,7 +117,8 @@ class PrayerTimeWidget extends StatelessWidget {
                     Padding(
                       padding: AppPaddings.tablePadding,
                       child: Text(
-                        Formater.jam(controller.waktuSholat.value!.asharTime),
+                        Formater.jam(controller.waktuSholat.value!.asharTime) +
+                            " $zona",
                       ),
                     ),
                   ],
@@ -117,7 +132,10 @@ class PrayerTimeWidget extends StatelessWidget {
                     Padding(
                       padding: AppPaddings.tablePadding,
                       child: Text(
-                        Formater.jam(controller.waktuSholat.value!.maghribTime),
+                        Formater.jam(
+                              controller.waktuSholat.value!.maghribTime,
+                            ) +
+                            " $zona",
                       ),
                     ),
                   ],
@@ -131,7 +149,8 @@ class PrayerTimeWidget extends StatelessWidget {
                     Padding(
                       padding: AppPaddings.tablePadding,
                       child: Text(
-                        Formater.jam(controller.waktuSholat.value!.isyaTime),
+                        Formater.jam(controller.waktuSholat.value!.isyaTime) +
+                            " $zona",
                       ),
                     ),
                   ],
@@ -139,9 +158,21 @@ class PrayerTimeWidget extends StatelessWidget {
               ],
             ),
             SizedBox(height: 5),
-            Text(
-              'Berikutnya: ${controller.waktuSholat.value!.nextPrayer} dalam ${Formater.jam(controller.waktuSholat.value!.nextPrayerTime)}',
-            ),
+            Obx(() {
+              final duration = controller.countDown.value;
+              final jam = duration.inHours.toString().padLeft(2, "0");
+              final menit = (duration.inMinutes % 60).toString().padLeft(
+                2,
+                "0",
+              );
+              final detik = (duration.inSeconds % 60 % 60).toString().padLeft(
+                2,
+                "0",
+              );
+              return Text(
+                'Berikutnya: ${controller.waktuSholat.value!.nextPrayer} dalam $jam:$menit:$detik',
+              );
+            }),
           ],
         );
       },

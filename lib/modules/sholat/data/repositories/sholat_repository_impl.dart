@@ -43,7 +43,6 @@ class SholatRepositoryImpl implements SholatRepository {
       url: "https://us1.api-bdc.net/data/reverse-geocode-client",
       query: query,
     );
-    print(data);
     return Location(
       cityName: data["city"],
       countryName: data["countryName"],
@@ -62,7 +61,7 @@ class SholatRepositoryImpl implements SholatRepository {
     String next = prayerTimesData.nextPrayer();
     var nextPrayerTime = prayerTimesData.timeForPrayer(next);
 
-    String nextID = switch (next) {
+    String nextId = switch (next) {
       'fajr' || "fajrafter" => "Subuh",
       'sunrise' => "Terbit",
       "duhr" => "Dzuhur",
@@ -78,7 +77,6 @@ class SholatRepositoryImpl implements SholatRepository {
       >= 135 && <= 141 => 9,
       _ => 0,
     };
-
     return WaktuSholat(
       subuhTime: prayerTimesData.fajr!.add(Duration(hours: addTimeZone)),
       terbitTime: prayerTimesData.sunrise!.add(Duration(hours: addTimeZone)),
@@ -86,7 +84,7 @@ class SholatRepositoryImpl implements SholatRepository {
       asharTime: prayerTimesData.asr!.add(Duration(hours: addTimeZone)),
       maghribTime: prayerTimesData.maghrib!.add(Duration(hours: addTimeZone)),
       isyaTime: prayerTimesData.isha!.add(Duration(hours: addTimeZone)),
-      nextPrayer: nextID,
+      nextPrayer: nextId,
       nextPrayerTime: nextPrayerTime!.add(Duration(hours: addTimeZone)),
     );
   }

@@ -19,7 +19,7 @@ class Formater {
   }
 
   static String tanggal(DateTime dateTime) {
-    return DateFormat('d MMMM y,', 'id').format(dateTime);
+    return DateFormat('d MMMM y', 'id').format(dateTime);
   }
 
   static String jam(DateTime dateTime) {
