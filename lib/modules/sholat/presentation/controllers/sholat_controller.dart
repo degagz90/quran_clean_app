@@ -1,17 +1,21 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+
 import '../../data/repositories/sholat_repository_impl.dart';
 import '../../domain/models/hijri_date.dart';
 import '../../domain/models/location.dart';
+import '../../domain/models/waktu_sholat.dart';
 import '../../domain/usecases/get_hijri_date.dart';
 import '../../domain/usecases/get_location.dart';
+import '../../domain/usecases/get_waktu_sholat.dart';
 
 class SholatController extends GetxController {
   final repository = SholatRepositoryImpl();
   Rx<DateTime> now = DateTime.now().obs;
   Rx<Location?> location = Rx<Location?>(null);
   Rx<HijriDate?> hijriDate = Rx<HijriDate?>(null);
+  Rx<WaktuSholat?> waktuSholat = Rx<WaktuSholat?>(null);
   Timer? _timer;
 
   @override
@@ -28,13 +32,20 @@ class SholatController extends GetxController {
     super.onClose();
   }
 
+  Future<void> getHijriDate() async {
+    final hijriDateUseCase = GetHijriDate(repository);
+    hijriDate.value = await hijriDateUseCase.execute(now.value);
+  }
+
   Future<void> getLocation() async {
     final locationUseCase = GetLocation(repository);
     location.value = await locationUseCase.execute();
   }
 
-  Future<void> getHijriDate() async {
-    final hijriDateUseCase = GetHijriDate(repository);
-    hijriDate.value = await hijriDateUseCase.execute(now.value);
+  Future<void> getWaktuSholat() async {
+    final waktuSholatUseCase = GetWaktuSholat(repository);
+    if (location.value != null) {
+      waktuSholat.value = await waktuSholatUseCase.execute(location.value!);
+    }
   }
 }

@@ -60,7 +60,7 @@ class TimeCard extends StatelessWidget {
                       ),
                       Divider(height: 5),
                       Text(
-                        "${tanggalHijriyah?.tanggal ?? ""} ${tanggalHijriyah?.bulan ?? ''} ${tanggalHijriyah?.tahun ?? ''}H",
+                        "${tanggalHijriyah?.tanggal} ${tanggalHijriyah?.bulan} ${tanggalHijriyah?.tahun} H",
                         style: AppText.titlePutihText3,
                       ),
                     ],

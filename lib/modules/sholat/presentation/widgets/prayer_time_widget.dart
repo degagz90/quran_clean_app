@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quran_clean/core/utils/formater.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/divider/paddings.dart';
@@ -13,10 +14,17 @@ class PrayerTimeWidget extends StatelessWidget {
     final controller = Get.find<SholatController>();
 
     return FutureBuilder(
-      future: controller.getLocation(),
+      future: Future.wait([
+        controller.getLocation(),
+        controller.getWaktuSholat(),
+      ]),
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
+        }
+        if (controller.location.value == null &&
+            controller.waktuSholat.value == null) {
+          return Center(child: Text('tidak ada data'));
         }
         var currentLocation = controller.location.value;
         return Column(
@@ -52,7 +60,9 @@ class PrayerTimeWidget extends StatelessWidget {
                     ),
                     Padding(
                       padding: AppPaddings.tablePadding,
-                      child: Text("04:37"),
+                      child: Text(
+                        Formater.jam(controller.waktuSholat.value!.subuhTime),
+                      ),
                     ),
                   ],
                 ),
@@ -64,7 +74,9 @@ class PrayerTimeWidget extends StatelessWidget {
                     ),
                     Padding(
                       padding: AppPaddings.tablePadding,
-                      child: Text("04:37"),
+                      child: Text(
+                        Formater.jam(controller.waktuSholat.value!.terbitTime),
+                      ),
                     ),
                   ],
                 ),
@@ -76,7 +88,9 @@ class PrayerTimeWidget extends StatelessWidget {
                     ),
                     Padding(
                       padding: AppPaddings.tablePadding,
-                      child: Text("04:37"),
+                      child: Text(
+                        Formater.jam(controller.waktuSholat.value!.dzuhurTime),
+                      ),
                     ),
                   ],
                 ),
@@ -88,7 +102,9 @@ class PrayerTimeWidget extends StatelessWidget {
                     ),
                     Padding(
                       padding: AppPaddings.tablePadding,
-                      child: Text("04:37"),
+                      child: Text(
+                        Formater.jam(controller.waktuSholat.value!.asharTime),
+                      ),
                     ),
                   ],
                 ),
@@ -100,7 +116,9 @@ class PrayerTimeWidget extends StatelessWidget {
                     ),
                     Padding(
                       padding: AppPaddings.tablePadding,
-                      child: Text("04:37"),
+                      child: Text(
+                        Formater.jam(controller.waktuSholat.value!.maghribTime),
+                      ),
                     ),
                   ],
                 ),
@@ -112,14 +130,18 @@ class PrayerTimeWidget extends StatelessWidget {
                     ),
                     Padding(
                       padding: AppPaddings.tablePadding,
-                      child: Text("04:37"),
+                      child: Text(
+                        Formater.jam(controller.waktuSholat.value!.isyaTime),
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
             SizedBox(height: 5),
-            Text('Berikutnya: Subuh dalam 04:05'),
+            Text(
+              'Berikutnya: ${controller.waktuSholat.value!.nextPrayer} dalam ${Formater.jam(controller.waktuSholat.value!.nextPrayerTime)}',
+            ),
           ],
         );
       },

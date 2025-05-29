@@ -1,10 +1,10 @@
 import '../models/hijri_date.dart';
 import '../models/location.dart';
-import '../models/prayer_time.dart';
+import '../models/waktu_sholat.dart';
 
 abstract class SholatRepository {
   Future<HijriDate> getHijriyahDate(DateTime dateTime);
   Future<Location> getLocation();
-  Future<PrayerTime> getPrayerTime(Location location);
+  Future<WaktuSholat> getPrayerTime(Location location);
   Future<double> getQiblaDirectrion(Location location);
 }

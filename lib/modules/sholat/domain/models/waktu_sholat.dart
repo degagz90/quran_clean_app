@@ -1,4 +1,4 @@
-class PrayerTime {
+class WaktuSholat {
   DateTime subuhTime;
   DateTime terbitTime;
   DateTime dzuhurTime;
@@ -8,7 +8,7 @@ class PrayerTime {
   String nextPrayer;
   DateTime nextPrayerTime;
 
-  PrayerTime({
+  WaktuSholat({
     required this.subuhTime,
     required this.terbitTime,
     required this.dzuhurTime,
