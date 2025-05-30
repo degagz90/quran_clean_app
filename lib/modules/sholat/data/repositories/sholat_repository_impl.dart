@@ -104,7 +104,7 @@ class SholatRepositoryImpl implements SholatRepository {
     String nextId = switch (next) {
       'fajr' || "fajrafter" => "Subuh",
       'sunrise' => "Terbit",
-      "duhr" => "Dzuhur",
+      "dhuhr" => "Dzuhur",
       "asr" => "Ashar",
       "maghrib" => "Maghrib",
       "isha" => "Isya",

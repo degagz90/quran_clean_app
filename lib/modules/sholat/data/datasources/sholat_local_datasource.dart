@@ -15,7 +15,10 @@ class SholatLocalDatasource {
       return null;
     }
     final expTime = DateTime.parse(expTimeString);
-    if (DateTime.now().isAfter(expTime)) {
+    final today = DateTime.now();
+    final currentDay = DateTime(today.year, today.month, today.day);
+    final cachedDay = DateTime(expTime.year, expTime.month, expTime.day);
+    if (currentDay.isAfter(cachedDay) || DateTime.now().isAfter(expTime)) {
       await clearCache(key);
       return null;
     }

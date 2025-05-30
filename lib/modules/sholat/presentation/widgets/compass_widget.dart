@@ -27,23 +27,42 @@ class _CompassWidgetState extends State<CompassWidget> {
             double? heading = snapshot.data;
             bool isFound = (heading! - controller.arahKiblat).abs() < 2;
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  isFound ? "Kiblat ditemukan!!" : "mencari arah kiblat..",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                SizedBox(
+                  height: 16,
+                  child: isFound
+                      ? Text(
+                          "Kiblat ditemukan!",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        )
+                      : Text(
+                          "mencari arah kiblat",
+                          style: AppText.subtitleText,
+                        ),
                 ),
-                Transform.rotate(
-                  angle: (heading) * (pi / 180) * -1,
-                  child: Image.asset(
-                    'assets/images/compass.png', // pastikan file ini ada
-                    width: 160,
-                    height: 160,
-                    color: AppColors.ungu1,
-                  ),
-                ),
-                Text(
-                  "heading: ${heading.toStringAsFixed(1)}°",
-                  style: AppText.subtitleText,
+                SizedBox(height: 16, child: Icon(Icons.arrow_drop_down_sharp)),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Transform.rotate(
+                      angle: (heading) * (pi / 180) * -1,
+                      child: Image.asset(
+                        'assets/images/compass2.png', // pastikan file ini ada
+                        width: 170,
+                        height: 170,
+                        color: AppColors.abu1,
+                      ),
+                    ),
+                    Text(
+                      " ${(heading < 0 ? heading + 360 : heading).toStringAsFixed(0)}°",
+                      style: AppText.subtitleText,
+                    ),
+                  ],
                 ),
               ],
             );
