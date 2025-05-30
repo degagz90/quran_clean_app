@@ -19,16 +19,35 @@ class SholatRepositoryImpl implements SholatRepository {
 
   @override
   Future<HijriDate> getHijriyahDate(DateTime dateTime) async {
+    final _cachekey = "hijriDate";
+    //cek apakah sudah ada cachedData
+    var cachedData = await localData.readCache(_cachekey);
+    //kalau tidak null langsung return HijriDate dari cachedData
+    if (cachedData != null) {
+      return HijriDate(
+        tanggal: cachedData['tanggal'],
+        bulan: cachedData['namabulan'],
+        tahun: cachedData['tahun'],
+      );
+    }
+    // kalau null, fetch data dari internet
     String urlDate = Formater.tanggalToUrl(dateTime);
     var data = await remoteData.fetchData(
       url:
           "https://service.unisayogya.ac.id/kalender/api/masehi2hijriah/muhammadiyah/$urlDate",
     );
-    return HijriDate(
+    final hijriDate = HijriDate(
       tanggal: data["tanggal"].toString(),
       bulan: data["namabulan"],
       tahun: data["tahun"].toString(),
     );
+    //setelah itu write ke storage,
+    await localData.writeCache(_cachekey, {
+      'tanggal': hijriDate.tanggal,
+      'namabulan': hijriDate.bulan,
+      'tahun': hijriDate.tahun,
+    });
+    return hijriDate;
   }
 
   @override
@@ -62,7 +81,7 @@ class SholatRepositoryImpl implements SholatRepository {
       longitude: position.longitude,
     );
 
-    localData.writeCache('location_cache', {
+    await localData.writeCache('location_cache', {
       'cityName': location.cityName,
       'countryName': location.countryName,
       'latitude': location.latitude,
