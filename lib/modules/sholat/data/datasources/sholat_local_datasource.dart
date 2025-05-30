@@ -22,7 +22,7 @@ class SholatLocalDatasource {
       await clearCache(key);
       return null;
     }
-    return await _cache.read(key);
+    return _cache.read(key);
   }
 
   Future<void> clearCache(String key) async {

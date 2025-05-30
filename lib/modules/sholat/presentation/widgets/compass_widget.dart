@@ -8,11 +8,13 @@ import '../../../../core/constants/colors/app_colors.dart';
 import '../controllers/sholat_controller.dart';
 
 class CompassWidget extends StatefulWidget {
+  const CompassWidget({super.key});
+
   @override
-  _CompassWidgetState createState() => _CompassWidgetState();
+  CompassWidgetState createState() => CompassWidgetState();
 }
 
-class _CompassWidgetState extends State<CompassWidget> {
+class CompassWidgetState extends State<CompassWidget> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<SholatController>();

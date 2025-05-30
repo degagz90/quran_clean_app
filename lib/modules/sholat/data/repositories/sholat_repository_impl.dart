@@ -19,9 +19,9 @@ class SholatRepositoryImpl implements SholatRepository {
 
   @override
   Future<HijriDate> getHijriyahDate(DateTime dateTime) async {
-    final _cachekey = "hijriDate";
+    final cachekey = "hijriDate";
     //cek apakah sudah ada cachedData
-    var cachedData = await localData.readCache(_cachekey);
+    var cachedData = await localData.readCache(cachekey);
     //kalau tidak null langsung return HijriDate dari cachedData
     if (cachedData != null) {
       return HijriDate(
@@ -42,7 +42,7 @@ class SholatRepositoryImpl implements SholatRepository {
       tahun: data["tahun"].toString(),
     );
     //setelah itu write ke storage,
-    await localData.writeCache(_cachekey, {
+    await localData.writeCache(cachekey, {
       'tanggal': hijriDate.tanggal,
       'namabulan': hijriDate.bulan,
       'tahun': hijriDate.tahun,

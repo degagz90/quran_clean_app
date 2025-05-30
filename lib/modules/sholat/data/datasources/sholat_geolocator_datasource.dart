@@ -37,7 +37,7 @@ class SholatGeolocatorDatasource {
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     final LocationSettings locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
+      accuracy: LocationAccuracy.best,
       distanceFilter: 100,
     );
     Position position = await Geolocator.getCurrentPosition(
