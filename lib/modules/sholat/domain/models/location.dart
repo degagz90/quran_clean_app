@@ -1,12 +1,12 @@
 class Location {
-  String cityName;
-  String countryName;
+  String wilayah;
+  String kota;
   double latitude;
   double longitude;
 
   Location({
-    required this.cityName,
-    required this.countryName,
+    required this.wilayah,
+    required this.kota,
     required this.latitude,
     required this.longitude,
   });

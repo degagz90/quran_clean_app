@@ -42,9 +42,7 @@ class PrayerTimeWidget extends StatelessWidget {
               children: [
                 Icon(Icons.place, color: AppColors.ungu2),
                 SizedBox(width: 10),
-                Text(
-                  "${currentLocation?.cityName}, ${currentLocation?.countryName}",
-                ),
+                Text("${currentLocation?.wilayah}, ${currentLocation?.kota}"),
               ],
             ),
             SizedBox(height: 10),

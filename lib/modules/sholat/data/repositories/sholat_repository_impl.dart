@@ -55,8 +55,8 @@ class SholatRepositoryImpl implements SholatRepository {
     var cachedData = await localData.readCache("location_cache");
     if (cachedData != null) {
       return Location(
-        cityName: cachedData['cityName'],
-        countryName: cachedData['countryName'],
+        wilayah: cachedData['wilayah'],
+        kota: cachedData['kota'],
         latitude: cachedData['latitude'],
         longitude: cachedData['longitude'],
       );
@@ -75,15 +75,15 @@ class SholatRepositoryImpl implements SholatRepository {
       query: query,
     );
     final location = Location(
-      cityName: data["city"],
-      countryName: data["countryName"],
+      wilayah: data["locality"],
+      kota: data["city"],
       latitude: position.latitude,
       longitude: position.longitude,
     );
 
     await localData.writeCache('location_cache', {
-      'cityName': location.cityName,
-      'countryName': location.countryName,
+      'wilayah': location.wilayah,
+      'kota': location.kota,
       'latitude': location.latitude,
       'longitude': location.longitude,
     });

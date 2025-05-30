@@ -7,12 +7,12 @@ class SholatAdhanDatasource {
     CalculationParameters params = CalculationMethod.singapore();
     params.madhab = Madhab.shafi;
     params.adjustments = {
-      'fajr': 3,
+      'fajr': 2,
       'sunrise': -3,
-      'dhuhr': 3,
-      'asr': 3,
-      'maghrib': 3,
-      'isha': 3,
+      'dhuhr': 2,
+      'asr': 2,
+      'maghrib': 2,
+      'isha': 2,
     };
 
     PrayerTimes prayerTimes = PrayerTimes(

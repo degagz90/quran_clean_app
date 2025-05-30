@@ -4,7 +4,9 @@ class SholatLocalDatasource {
   final _cache = GetStorage();
 
   Future<void> writeCache(String key, Map<String, dynamic> value) async {
-    final duration = (DateTime.now().add(Duration(hours: 1)).toIso8601String());
+    final duration = (DateTime.now()
+        .add(Duration(minutes: 10))
+        .toIso8601String());
     await _cache.write(key, value);
     await _cache.write("expTime", duration);
   }
