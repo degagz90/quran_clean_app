@@ -33,13 +33,13 @@ class SholatRepositoryImpl implements SholatRepository {
 
   @override
   Future<Location> getLocation() async {
-    if (await localData.hasData('location_cache')) {
-      final cached = await localData.readBox('location_cache');
+    var cachedData = await localData.readCache("location_cache");
+    if (cachedData != null) {
       return Location(
-        cityName: cached['cityName'],
-        countryName: cached['countryName'],
-        latitude: cached['latitude'],
-        longitude: cached['longitude'],
+        cityName: cachedData['cityName'],
+        countryName: cachedData['countryName'],
+        latitude: cachedData['latitude'],
+        longitude: cachedData['longitude'],
       );
     }
 
@@ -62,7 +62,7 @@ class SholatRepositoryImpl implements SholatRepository {
       longitude: position.longitude,
     );
 
-    localData.writeBox('location_cache', {
+    localData.writeCache('location_cache', {
       'cityName': location.cityName,
       'countryName': location.countryName,
       'latitude': location.latitude,
