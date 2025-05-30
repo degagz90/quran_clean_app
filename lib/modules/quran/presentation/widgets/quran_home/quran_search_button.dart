@@ -41,7 +41,9 @@ class QuranSearchButton extends StatelessWidget {
         final filtered = controller.listSurat.where((surat) {
           final name = sanitize(surat.name);
           final indoName = sanitize(surat.indoName);
-          return name.contains(query) || indoName.contains(query);
+          return name.contains(query) ||
+              indoName.contains(query) ||
+              surat.noSurat.toString().contains(query);
         }).toList();
         return filtered.map((surat) {
           return ListTile(
