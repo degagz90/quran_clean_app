@@ -57,7 +57,7 @@ class SholatController extends GetxController {
 
   Future<void> getHijriDate() async {
     final hijriDateUseCase = GetHijriDate(repository);
-    hijriDate.value = await hijriDateUseCase.execute(now.value);
+    hijriDate.value = await hijriDateUseCase.execute(DateTime.now());
   }
 
   Future<void> getLocation() async {

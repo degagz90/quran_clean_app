@@ -44,7 +44,7 @@ class SuratDetailView extends GetView<SuratDetailController> {
                     minimum: EdgeInsets.all(12),
                     child: Column(
                       children: [
-                        SizedBox(height: 200, child: SuratHeaderCard()),
+                        SizedBox(height: 160, child: SuratHeaderCard()),
                         Expanded(child: AyatWidget()),
                       ],
                     ),

@@ -24,6 +24,7 @@ class SholatRepositoryImpl implements SholatRepository {
     var cachedData = await localData.readCache(cachekey);
     //kalau tidak null langsung return HijriDate dari cachedData
     if (cachedData != null) {
+      print('ada data');
       return HijriDate(
         tanggal: cachedData['tanggal'],
         bulan: cachedData['namabulan'],

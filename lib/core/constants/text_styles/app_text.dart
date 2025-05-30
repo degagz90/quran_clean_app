@@ -27,7 +27,7 @@ class AppText {
   static const titlePutihText2 = TextStyle(
     fontFamily: 'Poppins',
     fontWeight: FontWeight.bold,
-    fontSize: 16,
+    fontSize: 14,
     color: Color(0xFFFFFFFF),
   );
 

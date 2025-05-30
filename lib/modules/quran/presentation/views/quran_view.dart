@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../controllers/quran_controller.dart';
 import '../widgets/quran_home/juz_tab.dart';
 import '../widgets/quran_home/last_read_card.dart';
+import '../widgets/quran_home/quran_search_button.dart';
 import '../widgets/quran_home/surat_tab.dart';
 
 class QuranView extends GetView<QuranController> {
@@ -14,7 +15,10 @@ class QuranView extends GetView<QuranController> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(title: Text('Quran Clean App')),
+        appBar: AppBar(
+          title: Text('Quran Clean App'),
+          actions: [QuranSearchButton()],
+        ),
         body: FutureBuilder(
           future: Future.wait([
             controller.loadSuratList(),

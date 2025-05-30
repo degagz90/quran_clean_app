@@ -12,10 +12,9 @@ class SuratHeaderCard extends StatelessWidget {
     return Card(
       color: Colors.grey[300],
       elevation: 10,
-      margin: EdgeInsets.all(12),
       clipBehavior: Clip.hardEdge,
       child: Container(
-        width: 360,
+        width: 320,
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -36,7 +35,7 @@ class SuratHeaderCard extends StatelessWidget {
             ),
             Text(
               controller.surat?.indoName ?? '',
-              style: AppText.titlePutihText,
+              style: AppText.titlePutihText2,
             ),
             Text(
               '${controller.surat?.type ?? ''} - ${controller.surat?.jmlAyat ?? ''} ayat',
