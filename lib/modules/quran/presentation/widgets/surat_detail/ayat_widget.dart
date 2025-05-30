@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quran_clean/modules/quran/presentation/widgets/surat_detail/ayat_widget_buttons/bookmark_button.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../../core/constants/colors/app_colors.dart';
 import '../../../../../core/constants/text_styles/app_text.dart';
 import '../../controllers/surat_detail_controller.dart';
-import 'ayat_widget_buttons/play_button.dart';
-import 'ayat_widget_buttons/tafsir_button.dart';
+import 'buttons/bookmark_button.dart';
+import 'buttons/play_button.dart';
+import 'buttons/tafsir_button.dart';
 
 class AyatWidget extends StatefulWidget {
   const AyatWidget({super.key});
@@ -21,11 +21,22 @@ class _AyatWidgetState extends State<AyatWidget> {
   final itemScrollC = ItemScrollController();
   final itemPosC = ItemPositionsListener.create();
   late Worker _scrollWorker;
+  late Worker _scrollWorker2;
 
   @override
   void initState() {
     super.initState();
     _scrollWorker = ever(controller.playingAyatIndex, (int index) {
+      if (index >= 0) {
+        itemScrollC.scrollTo(
+          index: index,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+          alignment: 0.1,
+        );
+      }
+    });
+    _scrollWorker2 = ever(controller.searchedAyatIndex, (int index) {
       if (index >= 0) {
         itemScrollC.scrollTo(
           index: index,
@@ -44,6 +55,7 @@ class _AyatWidgetState extends State<AyatWidget> {
   @override
   void dispose() {
     _scrollWorker.dispose();
+    _scrollWorker2.dispose();
     super.dispose();
   }
 

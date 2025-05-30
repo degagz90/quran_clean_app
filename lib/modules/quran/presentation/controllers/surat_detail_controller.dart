@@ -49,6 +49,7 @@ class SuratDetailController extends GetxController {
   RxInt lastReadAyat = 0.obs;
   RxBool isPlaying = false.obs;
   RxInt playingAyatIndex = (-1).obs;
+  RxInt searchedAyatIndex = (-1).obs;
 
   @override
   void onInit() {
@@ -103,6 +104,7 @@ class SuratDetailController extends GetxController {
   }
 
   void resetPage() async {
+    searchedAyatIndex.value = -1;
     listAyat.clear();
     surat = null;
     noAyat.value = 1;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quran_clean/modules/quran/presentation/widgets/surat_detail/buttons/surat_search_button.dart';
 
 import '../controllers/surat_detail_controller.dart';
 import '../widgets/surat_detail/ayat_widget.dart';
@@ -23,6 +24,7 @@ class SuratDetailView extends GetView<SuratDetailController> {
                 '${controller.noSurat.value}. ${controller.surat?.name ?? 'no data'}',
               ),
             ),
+            actions: [SuratSearchButton()],
           ),
           body: PageView.builder(
             itemCount: 114,
