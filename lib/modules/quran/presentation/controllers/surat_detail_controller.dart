@@ -18,6 +18,9 @@ import '../../../bookmark/domain/usecases/edit_bookmark.dart';
 import '../../../bookmark/domain/usecases/find_bookmark.dart';
 import '../../../bookmark/domain/usecases/is_bookmarked.dart';
 import '../../../bookmark/presentation/controllers/bookmark_controller.dart';
+import '../../../settings/data/repositories/setting_repository_impl.dart';
+import '../../../settings/domain/models/setting.dart';
+import '../../../settings/domain/usecases/get_setting.dart';
 import '../../data/repositories/quran_repository_impl.dart';
 import '../../domain/models/ayat.dart';
 import '../../domain/models/surat.dart';
@@ -25,6 +28,7 @@ import '../../domain/usecases/ayat_to_bookmark.dart';
 import '../../domain/usecases/delete_ayat_bookmark.dart';
 import '../../domain/usecases/edit_ayat_bookmark.dart';
 import '../../domain/usecases/find_bookmark_by_ayat.dart';
+import '../../domain/usecases/get_audio_setting.dart';
 import '../../domain/usecases/get_murottal_playing.dart';
 import '../../domain/usecases/get_surat_detail.dart';
 import '../../domain/usecases/is_ayat_bookmarked.dart';
@@ -38,6 +42,7 @@ class SuratDetailController extends GetxController {
   final quranRepository = QuranRepositoryImpl();
   final audioRepository = AudioRepositoryImpl();
   final bookmarkRepository = BookmarkRepositoryImpl();
+  final settingRepository = SettingRepositoryImpl();
   late final StreamSubscription<ProcessingState> _playerSub;
   RxInt noSurat = 0.obs;
   RxInt noAyat = 0.obs;
@@ -50,18 +55,22 @@ class SuratDetailController extends GetxController {
   RxBool isPlaying = false.obs;
   RxInt playingAyatIndex = (-1).obs;
   RxInt searchedAyatIndex = (-1).obs;
+  Qari qari = Qari.alAfasy;
+  bool continuesPlay = true;
 
   @override
   void onInit() {
+    getAudioSetting();
     noSurat.value = Get.arguments['no_surat'];
     noAyat.value = Get.arguments['no_ayat'] ?? 0;
     pageC = PageController(initialPage: noSurat.value - 1);
-
     final getAudioStateUseCase = GetAudioPlayerState(audioRepository);
     final getMurotalStateUseCase = GetMurottalPlaying(getAudioStateUseCase);
     _playerSub = getMurotalStateUseCase.execute().listen((state) async {
       if (state == ProcessingState.completed) {
-        if (isPlaying.value && playingAyatIndex.value + 1 < surat!.jmlAyat) {
+        if (continuesPlay &&
+            isPlaying.value &&
+            playingAyatIndex.value + 1 < surat!.jmlAyat) {
           // Next ayat
           final nextAyat = playingAyatIndex.value + 2;
           await playMurottal(noSurat.value, nextAyat);
@@ -83,6 +92,14 @@ class SuratDetailController extends GetxController {
     Get.find<BookmarkController>().getBookmarks();
     _playerSub.cancel();
     super.onClose();
+  }
+
+  Future<void> getAudioSetting() async {
+    final getSetting = GetSetting(settingRepository);
+    final useCase = GetAudioSetting(getSetting);
+    Setting setting = await useCase.execute();
+    qari = setting.qari;
+    continuesPlay = setting.continuesPlay;
   }
 
   Future<void> findSurat() async {
@@ -134,7 +151,7 @@ class SuratDetailController extends GetxController {
     final useCase = PlayMurottalAudio(playaudioUrlUseCase);
     playingAyatIndex.value = noAyat - 1;
     isPlaying.value = true;
-    await useCase.execute("ash shatree", noSurat, noAyat);
+    await useCase.execute(qari, noSurat, noAyat);
   }
 
   Future<void> stopMurottal() async {

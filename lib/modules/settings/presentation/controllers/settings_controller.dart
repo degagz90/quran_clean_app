@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:quran_clean/modules/settings/domain/usecases/get_setting.dart';
-import 'package:quran_clean/modules/settings/domain/usecases/save_setting.dart';
-import '../../data/repositories/setting_repository_impl.dart';
 
+import '../../data/repositories/setting_repository_impl.dart';
 import '../../domain/models/setting.dart';
+import '../../domain/usecases/get_setting.dart';
+import '../../domain/usecases/save_setting.dart';
 
 class SettingsController extends GetxController {
   final repository = SettingRepositoryImpl();
