@@ -3,10 +3,12 @@ import 'package:get_storage/get_storage.dart';
 class SholatLocalDatasource {
   final _cache = GetStorage();
 
-  Future<void> writeCache(String key, Map<String, dynamic> value) async {
-    final duration = (DateTime.now()
-        .add(Duration(minutes: 10))
-        .toIso8601String());
+  Future<void> writeCache(
+    String key,
+    Map<String, dynamic> value,
+    Duration expduration,
+  ) async {
+    final duration = (DateTime.now().add(expduration).toIso8601String());
     await _cache.write(key, value);
     await _cache.write("expTime", duration);
   }
@@ -17,10 +19,7 @@ class SholatLocalDatasource {
       return null;
     }
     final expTime = DateTime.parse(expTimeString);
-    final today = DateTime.now();
-    final currentDay = DateTime(today.year, today.month, today.day);
-    final cachedDay = DateTime(expTime.year, expTime.month, expTime.day);
-    if (currentDay.isAfter(cachedDay) || DateTime.now().isAfter(expTime)) {
+    if (DateTime.now().isAfter(expTime)) {
       await clearCache(key);
       return null;
     }

@@ -1,6 +1,5 @@
 import 'package:adhan_dart/adhan_dart.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:quran_clean/modules/sholat/data/datasources/sholat_local_datasource.dart';
 
 import '../../../../core/utils/formater.dart';
 import '../../domain/models/hijri_date.dart';
@@ -9,6 +8,7 @@ import '../../domain/models/waktu_sholat.dart';
 import '../../domain/repositories/sholat_repository.dart';
 import '../datasources/sholat_adhan_datasource.dart';
 import '../datasources/sholat_geolocator_datasource.dart';
+import '../datasources/sholat_local_datasource.dart';
 import '../datasources/sholat_remote_datasource.dart';
 
 class SholatRepositoryImpl implements SholatRepository {
@@ -19,19 +19,6 @@ class SholatRepositoryImpl implements SholatRepository {
 
   @override
   Future<HijriDate> getHijriyahDate(DateTime dateTime) async {
-    final cachekey = "hijriDate";
-    //cek apakah sudah ada cachedData
-    var cachedData = await localData.readCache(cachekey);
-    //kalau tidak null langsung return HijriDate dari cachedData
-    if (cachedData != null) {
-      print('ada data');
-      return HijriDate(
-        tanggal: cachedData['tanggal'],
-        bulan: cachedData['namabulan'],
-        tahun: cachedData['tahun'],
-      );
-    }
-    // kalau null, fetch data dari internet
     String urlDate = Formater.tanggalToUrl(dateTime);
     var data = await remoteData.fetchData(
       url:
@@ -42,12 +29,6 @@ class SholatRepositoryImpl implements SholatRepository {
       bulan: data["namabulan"],
       tahun: data["tahun"].toString(),
     );
-    //setelah itu write ke storage,
-    await localData.writeCache(cachekey, {
-      'tanggal': hijriDate.tanggal,
-      'namabulan': hijriDate.bulan,
-      'tahun': hijriDate.tahun,
-    });
     return hijriDate;
   }
 
@@ -87,7 +68,7 @@ class SholatRepositoryImpl implements SholatRepository {
       'kota': location.kota,
       'latitude': location.latitude,
       'longitude': location.longitude,
-    });
+    }, Duration(minutes: 15));
 
     return location;
   }

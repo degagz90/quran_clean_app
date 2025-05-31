@@ -4,4 +4,5 @@ class AppRoutes {
   static const suratDetail = '/quran/surat_detail';
   static const bookmark = '/bookmark';
   static const sholat = '/sholat';
+  static const settings = '/settings';
 }

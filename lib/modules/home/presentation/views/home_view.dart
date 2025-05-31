@@ -66,6 +66,11 @@ class HomeView extends GetView<HomeController> {
               icon: Icon(Icons.bookmark_border, color: AppColors.ungu2),
               label: 'Catatan',
             ),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.settings, color: Colors.white),
+              icon: Icon(Icons.settings_outlined, color: AppColors.ungu2),
+              label: 'Pengaturan',
+            ),
           ],
           selectedIndex: controller.tabIndex.value,
           onDestinationSelected: (value) {
@@ -79,6 +84,9 @@ class HomeView extends GetView<HomeController> {
                 break;
               case 2:
                 Get.rootDelegate.toNamed(AppRoutes.bookmark);
+                break;
+              case 3:
+                Get.rootDelegate.toNamed(AppRoutes.settings);
                 break;
             }
           },

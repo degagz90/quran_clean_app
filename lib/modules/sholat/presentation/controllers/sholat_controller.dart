@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:quran_clean/modules/sholat/domain/usecases/get_qibla.dart';
 
 import '../../data/repositories/sholat_repository_impl.dart';
 import '../../domain/models/hijri_date.dart';
@@ -9,6 +8,7 @@ import '../../domain/models/location.dart';
 import '../../domain/models/waktu_sholat.dart';
 import '../../domain/usecases/get_hijri_date.dart';
 import '../../domain/usecases/get_location.dart';
+import '../../domain/usecases/get_qibla.dart';
 import '../../domain/usecases/get_waktu_sholat.dart';
 
 class SholatController extends GetxController {
