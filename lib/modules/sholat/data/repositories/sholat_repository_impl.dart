@@ -46,7 +46,7 @@ class SholatRepositoryImpl implements SholatRepository {
     await localData.writeCache("hijri_date", {
       "tanggal": hijriDate.tanggal,
       "bulan": hijriDate.bulan,
-      "tahun": hijriDate.tanggal,
+      "tahun": hijriDate.tahun,
     }, expTime);
     //kembalikan hijriDate
     return hijriDate;
