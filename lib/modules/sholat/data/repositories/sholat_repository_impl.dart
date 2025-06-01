@@ -19,6 +19,17 @@ class SholatRepositoryImpl implements SholatRepository {
 
   @override
   Future<HijriDate> getHijriyahDate(DateTime dateTime) async {
+    //cek data dari cache
+    var cachedData = await localData.readCache("hijri_date");
+    //kalau ada data langsung kembalikan HijriDate
+    if (cachedData != null) {
+      return HijriDate(
+        tanggal: cachedData["tanggal"],
+        bulan: cachedData["bulan"],
+        tahun: cachedData["tahun"],
+      );
+    }
+    //kalau tidak ada data fetch data dari API
     String urlDate = Formater.tanggalToUrl(dateTime);
     var data = await remoteData.fetchData(
       url:
@@ -29,12 +40,23 @@ class SholatRepositoryImpl implements SholatRepository {
       bulan: data["namabulan"],
       tahun: data["tahun"].toString(),
     );
+    //setelah itu tulis ke cache, dihapus ketika berganti tanggal
+    final tomorrow = DateTime.now().add(Duration(days: 1));
+    final expTime = DateTime(tomorrow.year, tomorrow.month, tomorrow.day);
+    await localData.writeCache("hijri_date", {
+      "tanggal": hijriDate.tanggal,
+      "bulan": hijriDate.bulan,
+      "tahun": hijriDate.tanggal,
+    }, expTime);
+    //kembalikan hijriDate
     return hijriDate;
   }
 
   @override
   Future<Location> getLocation() async {
+    //cek data dari cache
     var cachedData = await localData.readCache("location_cache");
+    //kalau ada data langsung kembalikan Location
     if (cachedData != null) {
       return Location(
         wilayah: cachedData['wilayah'],
@@ -43,7 +65,7 @@ class SholatRepositoryImpl implements SholatRepository {
         longitude: cachedData['longitude'],
       );
     }
-
+    //kalau tidak ada data, fetch data dari geolocator + reverse geocode
     Position position = await geolocator.getCurrentLocation();
 
     Map<String, String> query = {
@@ -62,14 +84,16 @@ class SholatRepositoryImpl implements SholatRepository {
       latitude: position.latitude,
       longitude: position.longitude,
     );
+    // setelah itu tulis ke cache, akan dihapus setiap 15 menit
+    final expTime = DateTime.now().add(Duration(minutes: 15));
 
     await localData.writeCache('location_cache', {
       'wilayah': location.wilayah,
       'kota': location.kota,
       'latitude': location.latitude,
       'longitude': location.longitude,
-    }, Duration(minutes: 15));
-
+    }, expTime);
+    // kembalikan location
     return location;
   }
 

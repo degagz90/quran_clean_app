@@ -6,11 +6,10 @@ class SholatLocalDatasource {
   Future<void> writeCache(
     String key,
     Map<String, dynamic> value,
-    Duration expduration,
+    DateTime expTime,
   ) async {
-    final duration = (DateTime.now().add(expduration).toIso8601String());
     await _cache.write(key, value);
-    await _cache.write("expTime", duration);
+    await _cache.write("expTime", expTime.toIso8601String());
   }
 
   Future<Map<String, dynamic>?> readCache(String key) async {

@@ -8,6 +8,6 @@ class SettingLocalDatasource {
   }
 
   Future<String?> readStorage(String key) async {
-    return await box.read(key);
+    return box.read(key);
   }
 }
