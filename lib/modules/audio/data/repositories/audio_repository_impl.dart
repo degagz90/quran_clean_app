@@ -24,4 +24,17 @@ class AudioRepositoryImpl implements AudioRepository {
   @override
   Stream<ProcessingState> get processingStateStream =>
       audioDatasource.processingStateStream;
+
+  @override
+  Future<void> playAdzan(String sholat) async {
+    final idSholat = switch (sholat) {
+      "fajr" => "Subuh",
+      "dhuhr" => "Dzuhur",
+      "asr" => "Ashar",
+      "maghrib" => "Maghrib",
+      "isha" => "Isya",
+      _ => "",
+    };
+    await audioDatasource.playAdzan(idSholat);
+  }
 }

@@ -1,7 +1,13 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:quran_clean/modules/audio/domain/usecases/play_adzan.dart';
+import 'package:quran_clean/modules/settings/data/repositories/setting_repository_impl.dart';
+import 'package:quran_clean/modules/settings/domain/usecases/get_setting.dart';
+import 'package:quran_clean/modules/sholat/domain/usecases/get_sholat_setting.dart';
+import 'package:quran_clean/modules/sholat/domain/usecases/sholat_play_adzan.dart';
 
+import '../../../audio/data/repositories/audio_repository_impl.dart';
 import '../../data/repositories/sholat_repository_impl.dart';
 import '../../domain/models/hijri_date.dart';
 import '../../domain/models/location.dart';
@@ -13,6 +19,8 @@ import '../../domain/usecases/get_waktu_sholat.dart';
 
 class SholatController extends GetxController {
   final repository = SholatRepositoryImpl();
+  final audioRepository = AudioRepositoryImpl();
+  final settingRepository = SettingRepositoryImpl();
   Rx<DateTime> now = DateTime.now().obs;
   Rx<Location?> location = Rx<Location?>(null);
   Rx<HijriDate?> hijriDate = Rx<HijriDate?>(null);
@@ -22,9 +30,11 @@ class SholatController extends GetxController {
   int timeZone = 0;
   Timer? _timer2;
   Timer? _timer;
+  bool isAdzanPlay = false;
 
   @override
   void onInit() {
+    getSetting();
     super.onInit();
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -35,14 +45,15 @@ class SholatController extends GetxController {
       if (location.value == null || waktuSholat.value == null) {
         return;
       }
-
       timeZone = getTimeZone(location.value!.longitude);
-
       final diff = waktuSholat.value!.nextPrayerTime.difference(
         DateTime.now().add(Duration(hours: timeZone)),
       );
       countDown.value = diff.isNegative ? Duration.zero : diff;
       if (diff.inSeconds <= 0) {
+        if (isAdzanPlay && waktuSholat.value!.nextPrayer != "sunrise") {
+          await playAdzan(waktuSholat.value!.nextPrayer);
+        }
         await getWaktuSholat();
       }
     });
@@ -89,5 +100,18 @@ class SholatController extends GetxController {
       direction = direction - 360;
     }
     arahKiblat = direction;
+  }
+
+  Future<void> getSetting() async {
+    final getSettingUseCase = GetSetting(settingRepository);
+    final useCase = GetSholatSetting(getSettingUseCase);
+    final setting = await useCase.execute();
+    isAdzanPlay = setting.playAdzan;
+  }
+
+  Future<void> playAdzan(String sholat) async {
+    final playAdzanUseCase = PlayAdzan(audioRepository);
+    final useCase = SholatPlayAdzan(playAdzanUseCase);
+    await useCase.execute(sholat);
   }
 }

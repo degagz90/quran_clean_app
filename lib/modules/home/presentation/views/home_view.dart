@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quran_clean/core/constants/colors/app_colors.dart';
 
-import 'package:quran_clean/core/routes/app_routes.dart';
-
+import '../../../../core/constants/colors/app_colors.dart';
+import '../../../../core/routes/app_routes.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
