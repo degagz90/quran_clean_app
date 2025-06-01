@@ -43,19 +43,54 @@ class SuratSearchButton extends StatelessWidget {
               ayat.noAyat.toString().contains(query);
         }).toList();
         return filtered.map((ayat) {
+          final terjemah = ayat.terjemah;
+          final lowerTerjemah = sanitize(terjemah);
+          final idx = lowerTerjemah.indexOf(query);
+
+          // Ambil potongan sekitar query (misal 20 karakter sebelum & 60 sesudah)
+          int start = idx - 20 >= 0 ? idx - 20 : 0;
+          int end = idx + query.length + 60 <= terjemah.length
+              ? idx + query.length + 60
+              : terjemah.length;
+          String snippet = terjemah.substring(start, end);
+
+          // Tambahkan "..." jika snippet tidak dimulai dari awal ayat
+          if (start > 0) {
+            snippet = '...$snippet';
+          }
+
+          // Highlight query pada snippet
+          final matchStart = snippet.toLowerCase().indexOf(
+            searchController.text.toLowerCase(),
+          );
+          final matchEnd = matchStart + searchController.text.length;
+
           return ListTile(
-            title: Text(
-              "${ayat.noAyat}. ${ayat.terjemah}",
+            title: RichText(
+              text: TextSpan(
+                style: TextStyle(color: Colors.black),
+                children: [
+                  TextSpan(text: "${ayat.noAyat}. "),
+                  if (matchStart != -1) ...[
+                    TextSpan(text: snippet.substring(0, matchStart)),
+                    TextSpan(
+                      text: snippet.substring(matchStart, matchEnd),
+                      style: TextStyle(
+                        backgroundColor: Colors.yellow,
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(text: snippet.substring(matchEnd)),
+                  ] else
+                    TextSpan(text: snippet),
+                ],
+              ),
               overflow: TextOverflow.ellipsis,
             ),
             onTap: () {
               searchController.closeView("");
               Future.delayed(Duration(milliseconds: 800));
               controller.searchedAyatIndex.value = ayat.noAyat - 1;
-              // Get.toNamed(
-              //   AppRoutes.suratDetail,
-              //   arguments: {'no_surat': surat.noSurat},
-              // );
             },
           );
         });
