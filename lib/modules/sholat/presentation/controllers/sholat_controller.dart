@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:quran_clean/modules/audio/domain/usecases/play_adzan.dart';
-import 'package:quran_clean/modules/settings/data/repositories/setting_repository_impl.dart';
-import 'package:quran_clean/modules/settings/domain/usecases/get_setting.dart';
-import 'package:quran_clean/modules/sholat/domain/usecases/get_sholat_setting.dart';
-import 'package:quran_clean/modules/sholat/domain/usecases/sholat_play_adzan.dart';
 
 import '../../../audio/data/repositories/audio_repository_impl.dart';
+import '../../../audio/domain/usecases/play_adzan.dart';
+import '../../../settings/data/repositories/setting_repository_impl.dart';
+import '../../../settings/domain/usecases/get_setting.dart';
 import '../../data/repositories/sholat_repository_impl.dart';
 import '../../domain/models/hijri_date.dart';
 import '../../domain/models/location.dart';
@@ -15,7 +13,9 @@ import '../../domain/models/waktu_sholat.dart';
 import '../../domain/usecases/get_hijri_date.dart';
 import '../../domain/usecases/get_location.dart';
 import '../../domain/usecases/get_qibla.dart';
+import '../../domain/usecases/get_sholat_setting.dart';
 import '../../domain/usecases/get_waktu_sholat.dart';
+import '../../domain/usecases/sholat_play_adzan.dart';
 
 class SholatController extends GetxController {
   final repository = SholatRepositoryImpl();
@@ -51,7 +51,8 @@ class SholatController extends GetxController {
       );
       countDown.value = diff.isNegative ? Duration.zero : diff;
       if (diff.inSeconds <= 0) {
-        if (isAdzanPlay && waktuSholat.value!.nextPrayer != "sunrise") {
+        if (isAdzanPlay && waktuSholat.value!.nextPrayer != "Terbit") {
+          print(waktuSholat.value!.nextPrayer);
           await playAdzan(waktuSholat.value!.nextPrayer);
         }
         await getWaktuSholat();

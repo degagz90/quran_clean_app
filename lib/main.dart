@@ -12,6 +12,7 @@ void main() async {
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
+    androidShowNotificationBadge: true,
   );
   await initializeDateFormatting('id', null);
   await GetStorage.init();

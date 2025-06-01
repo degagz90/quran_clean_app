@@ -47,6 +47,10 @@ class AudioDatasource {
     }
     //putar adzan
     _adhanPlayer.setAudioSource(audioSource);
+
     await _adhanPlayer.play();
+    if (_adhanPlayer.processingState == ProcessingState.completed) {
+      await _adhanPlayer.stop();
+    }
   }
 }
