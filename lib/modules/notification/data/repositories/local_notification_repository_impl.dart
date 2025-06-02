@@ -5,7 +5,7 @@ class LocalNotificationRepositoryImpl implements LocalNotificationsRepository {
   final notificationService = NotificationService();
 
   @override
-  Future<void> showNotification(String prayerName) async {
-    await notificationService.showNotification(prayerName);
+  Future<void> showNotification(String prayerName, DateTime prayerTime) async {
+    await notificationService.showNotification(prayerName, prayerTime);
   }
 }

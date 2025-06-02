@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:get/get.dart';
 
 import '../../../notification/data/repositories/local_notification_repository_impl.dart';
-import '../../../notification/domain/usecases/show_notification.dart';
 import '../../../settings/data/repositories/setting_repository_impl.dart';
-import '../../../settings/domain/usecases/get_setting.dart';
 import '../../data/repositories/sholat_repository_impl.dart';
 import '../../domain/models/hijri_date.dart';
 import '../../domain/models/location.dart';
@@ -13,9 +11,7 @@ import '../../domain/models/waktu_sholat.dart';
 import '../../domain/usecases/get_hijri_date.dart';
 import '../../domain/usecases/get_location.dart';
 import '../../domain/usecases/get_qibla.dart';
-import '../../domain/usecases/get_sholat_setting.dart';
 import '../../domain/usecases/get_waktu_sholat.dart';
-import '../../domain/usecases/sholat_notification.dart';
 
 class SholatController extends GetxController {
   final repository = SholatRepositoryImpl();
@@ -31,10 +27,10 @@ class SholatController extends GetxController {
   Timer? _timer2;
   Timer? _timer;
   bool isAdzanPlay = false;
+  bool notifOn = false;
 
   @override
   void onInit() {
-    getSetting();
     super.onInit();
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -51,10 +47,6 @@ class SholatController extends GetxController {
       );
       countDown.value = diff.isNegative ? Duration.zero : diff;
       if (diff.inSeconds <= 0) {
-        if (isAdzanPlay && waktuSholat.value!.nextPrayer != "Terbit") {
-          print(waktuSholat.value!.nextPrayer);
-          await adzanNotif(waktuSholat.value!.nextPrayer);
-        }
         await getWaktuSholat();
       }
     });
@@ -101,18 +93,5 @@ class SholatController extends GetxController {
       direction = direction - 360;
     }
     arahKiblat = direction;
-  }
-
-  Future<void> getSetting() async {
-    final getSettingUseCase = GetSetting(settingRepository);
-    final useCase = GetSholatSetting(getSettingUseCase);
-    final setting = await useCase.execute();
-    isAdzanPlay = setting.playAdzan;
-  }
-
-  Future<void> adzanNotif(String sholat) async {
-    final showNotifUseCase = ShowNotification(notificationRepository);
-    final useCase = SholatNotification(showNotifUseCase);
-    await useCase.execute(sholat);
   }
 }

@@ -1,3 +1,3 @@
 abstract class LocalNotificationsRepository {
-  Future<void> showNotification(String prayerName);
+  Future<void> showNotification(String prayerName, DateTime prayerTime);
 }

@@ -5,12 +5,14 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'core/routes/app_pages.dart';
 import 'core/themes/app_theme.dart';
+import 'package:timezone/data/latest.dart' as tz;
 import 'modules/notification/data/datasources/local_notifications_datasource.dart';
 
 final NotificationService notification = NotificationService();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones();
   await notification.initialize();
   await initializeDateFormatting('id', null);
   await GetStorage.init();
