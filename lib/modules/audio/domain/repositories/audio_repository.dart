@@ -5,5 +5,5 @@ abstract class AudioRepository {
   Future<void> pausePlayAudio();
   Future<void> stopAudio();
   Stream<ProcessingState> get processingStateStream;
-  Future<void> playAdzan(String sholat);
+  // Future<void> playAdzan(String sholat);
 }

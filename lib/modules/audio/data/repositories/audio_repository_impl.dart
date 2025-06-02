@@ -25,8 +25,8 @@ class AudioRepositoryImpl implements AudioRepository {
   Stream<ProcessingState> get processingStateStream =>
       audioDatasource.processingStateStream;
 
-  @override
-  Future<void> playAdzan(String sholat) async {
-    await audioDatasource.playAdzan(sholat);
-  }
+  // @override
+  // Future<void> playAdzan(String sholat) async {
+  //   await audioDatasource.playAdzan(sholat);
+  // }
 }

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 
-import '../../../audio/data/repositories/audio_repository_impl.dart';
-import '../../../audio/domain/usecases/play_adzan.dart';
+import '../../../notification/data/repositories/local_notification_repository_impl.dart';
+import '../../../notification/domain/usecases/show_notification.dart';
 import '../../../settings/data/repositories/setting_repository_impl.dart';
 import '../../../settings/domain/usecases/get_setting.dart';
 import '../../data/repositories/sholat_repository_impl.dart';
@@ -15,12 +15,12 @@ import '../../domain/usecases/get_location.dart';
 import '../../domain/usecases/get_qibla.dart';
 import '../../domain/usecases/get_sholat_setting.dart';
 import '../../domain/usecases/get_waktu_sholat.dart';
-import '../../domain/usecases/sholat_play_adzan.dart';
+import '../../domain/usecases/sholat_notification.dart';
 
 class SholatController extends GetxController {
   final repository = SholatRepositoryImpl();
-  final audioRepository = AudioRepositoryImpl();
   final settingRepository = SettingRepositoryImpl();
+  final notificationRepository = LocalNotificationRepositoryImpl();
   Rx<DateTime> now = DateTime.now().obs;
   Rx<Location?> location = Rx<Location?>(null);
   Rx<HijriDate?> hijriDate = Rx<HijriDate?>(null);
@@ -53,7 +53,7 @@ class SholatController extends GetxController {
       if (diff.inSeconds <= 0) {
         if (isAdzanPlay && waktuSholat.value!.nextPrayer != "Terbit") {
           print(waktuSholat.value!.nextPrayer);
-          await playAdzan(waktuSholat.value!.nextPrayer);
+          await adzanNotif(waktuSholat.value!.nextPrayer);
         }
         await getWaktuSholat();
       }
@@ -110,9 +110,9 @@ class SholatController extends GetxController {
     isAdzanPlay = setting.playAdzan;
   }
 
-  Future<void> playAdzan(String sholat) async {
-    final playAdzanUseCase = PlayAdzan(audioRepository);
-    final useCase = SholatPlayAdzan(playAdzanUseCase);
+  Future<void> adzanNotif(String sholat) async {
+    final showNotifUseCase = ShowNotification(notificationRepository);
+    final useCase = SholatNotification(showNotifUseCase);
     await useCase.execute(sholat);
   }
 }

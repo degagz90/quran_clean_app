@@ -4,7 +4,7 @@ class PlayAdzan {
   final AudioRepository repository;
   PlayAdzan(this.repository);
 
-  Future<void> execute(String sholat) async {
-    await repository.playAdzan(sholat);
-  }
+  // Future<void> execute(String sholat) async {
+  //   await repository.playAdzan(sholat);
+  // }
 }
