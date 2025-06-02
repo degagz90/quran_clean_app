@@ -18,7 +18,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            tools:ignore="Instantiatable"
             android:launchMode="singleTop"
             android:taskAffinity=""
             android:theme="@style/LaunchTheme"
