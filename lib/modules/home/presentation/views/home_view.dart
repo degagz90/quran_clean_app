@@ -14,30 +14,19 @@ class HomeView extends GetView<HomeController> {
       bottomNavigationBar: Obx(
         () => NavigationBar(
           animationDuration: Duration(milliseconds: 500),
-          indicatorColor: AppColors.ungu2,
-          labelTextStyle: WidgetStatePropertyAll(
-            TextStyle(color: AppColors.ungu2, fontWeight: FontWeight.bold),
-          ),
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           elevation: 15,
-          surfaceTintColor: Colors.white,
           destinations: [
             NavigationDestination(
               selectedIcon: SizedBox(
                 height: 24,
                 width: 24,
-                child: Image.asset(
-                  "assets/icons/quran.png",
-                  color: Colors.white,
-                ),
+                child: Image.asset("assets/icons/quran.png"),
               ),
               icon: SizedBox(
                 height: 24,
                 width: 24,
-                child: Image.asset(
-                  "assets/icons/quran_outlined.png",
-                  color: AppColors.ungu2,
-                ),
+                child: Image.asset("assets/icons/quran_outlined.png"),
               ),
               label: 'Quran',
             ),
@@ -45,18 +34,12 @@ class HomeView extends GetView<HomeController> {
               selectedIcon: SizedBox(
                 height: 24,
                 width: 24,
-                child: Image.asset(
-                  "assets/icons/sholat.png",
-                  color: Colors.white,
-                ),
+                child: Image.asset("assets/icons/sholat.png"),
               ),
               icon: SizedBox(
                 height: 24,
                 width: 24,
-                child: Image.asset(
-                  "assets/icons/sholat_outlined.png",
-                  color: AppColors.ungu2,
-                ),
+                child: Image.asset("assets/icons/sholat_outlined.png"),
               ),
               label: 'Sholat',
             ),
@@ -67,7 +50,7 @@ class HomeView extends GetView<HomeController> {
             ),
             NavigationDestination(
               selectedIcon: Icon(Icons.settings, color: Colors.white),
-              icon: Icon(Icons.settings_outlined, color: AppColors.ungu2),
+              icon: Icon(Icons.settings_outlined, color: AppColors.abu1),
               label: 'Pengaturan',
             ),
           ],

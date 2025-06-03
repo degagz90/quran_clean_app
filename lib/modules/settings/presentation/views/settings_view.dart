@@ -36,6 +36,8 @@ class SettingsView extends GetView<SettingsController> {
                   selected: {controller.selectedTema.value},
                   onSelectionChanged: (Set<Tema> newSelection) {
                     controller.selectedTema.value = newSelection.first;
+                    controller.toogleTheme();
+                    controller.saveSetting();
                   },
                 ),
               ),
@@ -64,6 +66,7 @@ class SettingsView extends GetView<SettingsController> {
                   onChanged: (value) {
                     controller.selectedQari.value =
                         value ?? controller.selectedQari.value;
+                    controller.saveSetting();
                   },
                 ),
               ),
@@ -76,6 +79,7 @@ class SettingsView extends GetView<SettingsController> {
                   value: controller.continuesPlay.value,
                   onChanged: (value) {
                     controller.continuesPlay.value = value;
+                    controller.saveSetting();
                   },
                 ),
               ),
@@ -90,6 +94,7 @@ class SettingsView extends GetView<SettingsController> {
                   value: controller.playAdzan.value,
                   onChanged: (value) async {
                     controller.playAdzan.value = value;
+                    controller.saveSetting();
                   },
                 ),
               ),

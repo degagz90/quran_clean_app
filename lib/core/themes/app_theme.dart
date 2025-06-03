@@ -1,41 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:quran_clean/core/constants/text_styles/app_text.dart';
 
 import '../constants/colors/app_colors.dart';
 
 class AppTheme {
   static final lightTheme = ThemeData(
     brightness: Brightness.light,
+    primaryColor: AppColors.ungu2,
+    primaryColorDark: AppColors.ungu1,
+    iconTheme: IconThemeData(color: AppColors.ungu2),
     fontFamily: 'Poppins',
-    tabBarTheme: TabBarThemeData(labelColor: AppColors.ungu1),
-    listTileTheme: ListTileThemeData(
-      titleTextStyle: TextStyle(
-        fontFamily: 'Poppins',
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        color: AppColors.biruTua1,
-      ),
-      subtitleTextStyle: AppText.subtitleText,
-      leadingAndTrailingTextStyle: TextStyle(
-        fontFamily: 'Amiri',
-        color: AppColors.ungu2,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
     appBarTheme: AppBarTheme(
       titleTextStyle: TextStyle(
-        fontFamily: 'Poppins',
+        color: AppColors.ungu2,
         fontSize: 20,
-        color: AppColors.ungu1,
+        fontFamily: "Poppins",
         fontWeight: FontWeight.bold,
       ),
+      iconTheme: IconThemeData(color: AppColors.ungu2),
     ),
+    navigationBarTheme: NavigationBarThemeData(
+      labelTextStyle: WidgetStateProperty.all<TextStyle>(
+        TextStyle(color: AppColors.ungu2, fontFamily: 'Poppins'),
+      ),
+      indicatorColor: AppColors.ungu2,
+    ),
+  );
 
+  static final darkTheme = ThemeData(
+    brightness: Brightness.dark,
     primaryColor: AppColors.ungu2,
-    iconTheme: IconThemeData(color: AppColors.ungu2),
-    iconButtonTheme: IconButtonThemeData(
-      style: ButtonStyle(iconColor: WidgetStateProperty.all(AppColors.ungu2)),
+    primaryColorDark: AppColors.ungu1,
+    fontFamily: 'Poppins',
+    appBarTheme: AppBarTheme(
+      titleTextStyle: TextStyle(
+        color: AppColors.ungu2,
+        fontSize: 20,
+        fontFamily: "Poppins",
+        fontWeight: FontWeight.bold,
+      ),
+      iconTheme: IconThemeData(color: AppColors.ungu2),
+    ),
+    navigationBarTheme: NavigationBarThemeData(
+      labelTextStyle: WidgetStateProperty.all<TextStyle>(
+        TextStyle(color: AppColors.abu1, fontFamily: 'Poppins'),
+      ),
     ),
   );
 }

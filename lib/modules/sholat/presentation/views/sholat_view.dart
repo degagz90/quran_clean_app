@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quran_clean/modules/sholat/presentation/widgets/compass_widget.dart';
+import '../widgets/compass_widget.dart';
 
 import '../controllers/sholat_controller.dart';
 import '../widgets/prayer_time_widget.dart';

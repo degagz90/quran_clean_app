@@ -42,7 +42,7 @@ class BookmarkView extends GetView<BookmarkController> {
                         final timeStamp = Formater.timeStamp(DateTime.now());
                         controller.textC.text = bookmark.catatan;
                         Get.defaultDialog(
-                          buttonColor: Theme.of(context).primaryColor,
+                          buttonColor: Get.theme.primaryColor,
                           textConfirm: 'edit',
                           textCancel: 'hapus',
                           barrierDismissible: true,

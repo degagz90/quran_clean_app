@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quran_clean/modules/sholat/presentation/controllers/sholat_controller.dart';
 
@@ -57,5 +58,11 @@ class SettingsController extends GetxController {
     );
     //simpan setting ke database
     await useCase.execute(setting);
+  }
+
+  void toogleTheme() {
+    Get.changeThemeMode(
+      selectedTema.value == Tema.light ? ThemeMode.light : ThemeMode.dark,
+    );
   }
 }
