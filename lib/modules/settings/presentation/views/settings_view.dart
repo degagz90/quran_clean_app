@@ -88,7 +88,7 @@ class SettingsView extends GetView<SettingsController> {
                 () => Switch(
                   activeColor: AppColors.ungu2,
                   value: controller.playAdzan.value,
-                  onChanged: (value) {
+                  onChanged: (value) async {
                     controller.playAdzan.value = value;
                   },
                 ),

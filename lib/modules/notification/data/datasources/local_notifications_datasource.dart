@@ -23,25 +23,33 @@ class NotificationService {
     );
   }
 
-  Future<void> showNotification(String prayerName, DateTime prayerTime) async {
+  Future<void> showNotification(
+    String prayerName,
+    DateTime prayerTime,
+    int id,
+    String localZone,
+  ) async {
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-          'your_channel_id',
-          'your_channel_name',
+          '001',
+          'Adzan_channel',
           channelDescription: 'Your channel description',
           importance: Importance.max,
           priority: Priority.high,
           sound: RawResourceAndroidNotificationSound(
-            prayerName == "Subuh" ? "fajr_adzan" : "adzan",
+            prayerName.toLowerCase().contains("subuh") ? "fajr_adzan" : "adzan",
           ),
-          playSound: true,
+          showWhen: true,
+          fullScreenIntent: true,
         );
     NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
     );
-    final localTime = tz.TZDateTime.from(prayerTime, tz.local);
+
+    final location = tz.getLocation(localZone);
+    final localTime = tz.TZDateTime.from(prayerTime, location);
     await _flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
+      id,
       'Adzan $prayerName',
       'Waktunya sholat $prayerName',
       localTime,
@@ -49,6 +57,11 @@ class NotificationService {
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,
     );
-    print("Notification set, scheduled on ${localTime}");
+    print("Adzan $prayerName set, scheduled on ${localTime}");
+  }
+
+  Future<void> cancelAllNotifications() async {
+    await _flutterLocalNotificationsPlugin.cancelAll();
+    print("Notification has been reset");
   }
 }

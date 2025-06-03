@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:quran_clean/modules/sholat/presentation/controllers/sholat_controller.dart';
 
 import '../../data/repositories/setting_repository_impl.dart';
 import '../../domain/models/setting.dart';
@@ -6,6 +7,7 @@ import '../../domain/usecases/get_setting.dart';
 import '../../domain/usecases/save_setting.dart';
 
 class SettingsController extends GetxController {
+  final sholatController = Get.find<SholatController>();
   final repository = SettingRepositoryImpl();
   Rx<Tema> selectedTema = Tema.light.obs;
   Rx<Qari> selectedQari = Qari.alAfasy.obs;
@@ -17,6 +19,13 @@ class SettingsController extends GetxController {
     // ambil setting/default saat init
     getSetting();
     super.onInit();
+    ever(playAdzan, (callback) {
+      if (playAdzan.value) {
+        sholatController.setAdzanNotif();
+      } else {
+        sholatController.deleteAdzanNotif();
+      }
+    });
   }
 
   @override

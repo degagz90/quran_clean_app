@@ -4,7 +4,12 @@ class ShowNotification {
   final LocalNotificationsRepository repository;
   ShowNotification(this.repository);
 
-  Future<void> execute(String prayerName, DateTime prayerTime) async {
-    await repository.showNotification(prayerName, prayerTime);
+  Future<void> execute(
+    String prayerName,
+    DateTime prayerTime,
+    int id,
+    String localZone,
+  ) async {
+    await repository.showNotification(prayerName, prayerTime, id, localZone);
   }
 }

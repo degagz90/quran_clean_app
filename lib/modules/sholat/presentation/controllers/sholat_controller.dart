@@ -1,6 +1,13 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:quran_clean/modules/notification/domain/usecases/cancel_all_notifications.dart';
+import 'package:quran_clean/modules/notification/domain/usecases/show_notification.dart';
+import 'package:quran_clean/modules/settings/domain/models/setting.dart';
+import 'package:quran_clean/modules/settings/domain/usecases/get_setting.dart';
+import 'package:quran_clean/modules/sholat/domain/usecases/delete_adzan_notif.dart';
+import 'package:quran_clean/modules/sholat/domain/usecases/get_sholat_setting.dart';
+import 'package:quran_clean/modules/sholat/domain/usecases/set_adzan_notif.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import '../../../../core/utils/formater.dart';
@@ -36,6 +43,7 @@ class SholatController extends GetxController {
 
   @override
   void onInit() {
+    getAdzanSetting();
     super.onInit();
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -75,6 +83,9 @@ class SholatController extends GetxController {
     final waktuSholatUseCase = GetWaktuSholat(repository);
     if (location.value != null) {
       waktuSholat.value = await waktuSholatUseCase.execute(location.value!);
+      if (notifOn) {
+        await setAdzanNotif();
+      }
     }
   }
 
@@ -90,6 +101,61 @@ class SholatController extends GetxController {
     final timezone = tz.getLocation(timezoneName);
     final DateTime timeZoned = tz.TZDateTime.from(prayerTime, timezone);
     return Formater.jam(timeZoned);
+  }
+
+  Future<void> setAdzanNotif() async {
+    final showNotifUseCase = ShowNotification(notificationRepository);
+    final setAdzanUseCase = SetAdzanNotif(showNotifUseCase);
+    //delete notif supaya tidak duplicate
+    await deleteAdzanNotif();
+    //set adzan subuh
+    await setAdzanUseCase.execute(
+      "Subuh",
+      waktuSholat.value!.subuhTime,
+      0,
+      location.value!.timeZone,
+    );
+    //set adzan dzuhur
+    await setAdzanUseCase.execute(
+      "Dzuhur",
+      waktuSholat.value!.dzuhurTime,
+      1,
+      location.value!.timeZone,
+    );
+    //set adzan ashar
+    await setAdzanUseCase.execute(
+      "Ashar",
+      waktuSholat.value!.asharTime,
+      2,
+      location.value!.timeZone,
+    );
+    //set adzan maghrib
+    await setAdzanUseCase.execute(
+      "Maghrib",
+      waktuSholat.value!.maghribTime,
+      3,
+      location.value!.timeZone,
+    );
+    //set adzan isya
+    await setAdzanUseCase.execute(
+      "Isya",
+      waktuSholat.value!.isyaTime,
+      4,
+      location.value!.timeZone,
+    );
+  }
+
+  Future<void> deleteAdzanNotif() async {
+    final cancelNotifUseCase = CancelAllNotifications(notificationRepository);
+    final deleteAdzanNotif = DeleteAdzanNotif(cancelNotifUseCase);
+    await deleteAdzanNotif.execute();
+  }
+
+  Future<void> getAdzanSetting() async {
+    final getSettingUseCase = GetSetting(settingRepository);
+    final useCase = GetSholatSetting(getSettingUseCase);
+    Setting setting = await useCase.execute();
+    notifOn = setting.playAdzan;
   }
 
   Future<void> getQibla(Location location) async {

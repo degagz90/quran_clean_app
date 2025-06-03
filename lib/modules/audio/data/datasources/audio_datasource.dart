@@ -13,6 +13,7 @@ class AudioDatasource {
     if (_player.playing) {
       await _player.pause();
     } else {
+      await _player.seek(Duration.zero);
       await _player.play();
     }
   }
