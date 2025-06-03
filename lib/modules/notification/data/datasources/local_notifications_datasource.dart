@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import "package:timezone/timezone.dart" as tz;
 
@@ -21,6 +22,11 @@ class NotificationService {
             // Handle notification tap
           },
     );
+    await _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.areNotificationsEnabled();
   }
 
   Future<void> showNotification(
@@ -31,14 +37,15 @@ class NotificationService {
   ) async {
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-          '001',
-          'Adzan_channel',
-          channelDescription: 'Your channel description',
+          '002',
+          'Adzan',
+          channelDescription: 'Notifikasi Adzan',
           importance: Importance.max,
           priority: Priority.high,
           sound: RawResourceAndroidNotificationSound(
             prayerName.toLowerCase().contains("subuh") ? "fajr_adzan" : "adzan",
           ),
+          playSound: true,
           showWhen: true,
           fullScreenIntent: true,
         );
@@ -57,11 +64,11 @@ class NotificationService {
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,
     );
-    print("Adzan $prayerName set, scheduled on ${localTime}");
+    debugPrint("Adzan $prayerName set, scheduled on $localTime");
   }
 
   Future<void> cancelAllNotifications() async {
     await _flutterLocalNotificationsPlugin.cancelAll();
-    print("Notification has been reset");
+    debugPrint("Notification has been reset");
   }
 }

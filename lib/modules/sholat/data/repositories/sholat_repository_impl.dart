@@ -69,7 +69,6 @@ class SholatRepositoryImpl implements SholatRepository {
     }
     //kalau tidak ada data, fetch data dari geolocator + reverse geocode
     Position position = await geolocator.getCurrentLocation();
-
     Map<String, String> query = {
       "latitude": (position.latitude).toString(),
       "longitude": (position.longitude).toString(),
@@ -83,7 +82,7 @@ class SholatRepositoryImpl implements SholatRepository {
     final List<Map<String, dynamic>> informasi = List.from(
       data["localityInfo"]["informative"],
     );
-    final timeZone = informasi.firstWhere(
+    final String timeZone = informasi.firstWhere(
       (element) => element["description"] == "zona waktu",
     )["name"];
     final location = Location(

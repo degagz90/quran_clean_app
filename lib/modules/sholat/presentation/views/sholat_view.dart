@@ -16,7 +16,6 @@ class SholatView extends GetView<SholatController> {
 
       body: FutureBuilder(
         future: () async {
-          await controller.getLocation();
           await controller.getQibla(controller.location.value!);
         }(),
         builder: (context, snapshot) {

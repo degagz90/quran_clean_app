@@ -43,6 +43,7 @@ class SholatController extends GetxController {
 
   @override
   void onInit() {
+    getLocation();
     getAdzanSetting();
     super.onInit();
 
@@ -60,6 +61,13 @@ class SholatController extends GetxController {
         await getNextSholat();
       }
     });
+  }
+
+  @override
+  void onReady() {
+    getLocation();
+    getAdzanSetting();
+    super.onReady();
   }
 
   @override

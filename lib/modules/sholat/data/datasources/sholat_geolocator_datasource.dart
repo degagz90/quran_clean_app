@@ -4,7 +4,6 @@ class SholatGeolocatorDatasource {
   Future<Position> getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
-
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
