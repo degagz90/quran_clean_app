@@ -28,7 +28,6 @@ class AppTheme {
     ),
 
     listTileTheme: ListTileThemeData(
-      titleTextStyle: AppText.listTileTitleLight,
       subtitleTextStyle: AppText.listTileSubtLight,
     ),
   );
@@ -54,9 +53,9 @@ class AppTheme {
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: AppColors.biruTua3,
       labelTextStyle: WidgetStateProperty.all<TextStyle>(
-        TextStyle(color: AppColors.abu1, fontFamily: 'Poppins'),
+        TextStyle(color: AppColors.ungu3, fontFamily: 'Poppins'),
       ),
-      iconTheme: WidgetStatePropertyAll(IconThemeData(color: AppColors.abu1)),
+      iconTheme: WidgetStatePropertyAll(IconThemeData(color: AppColors.ungu3)),
     ),
 
     listTileTheme: ListTileThemeData(

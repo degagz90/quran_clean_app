@@ -123,8 +123,8 @@ class _AyatWidgetState extends State<AyatWidget> {
               subtitle: Text(
                 ayat.terjemah,
                 style: Get.theme.brightness == Brightness.light
-                    ? AppText.listTileSubtLight
-                    : AppText.listTileSubtDark,
+                    ? AppText.listTileSubtLight.copyWith(fontSize: 14)
+                    : AppText.listTileSubtDark.copyWith(fontSize: 14),
               ),
             ),
           ],

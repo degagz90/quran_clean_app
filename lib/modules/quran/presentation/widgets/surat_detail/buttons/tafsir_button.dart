@@ -26,7 +26,9 @@ class TafsirButton extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   '${_ayat.tafsir}\n\nsumber: Kementrian Agama Republik Indonesia',
-                  style: AppText.subtitleText,
+                  style: Get.theme.brightness == Brightness.light
+                      ? AppText.listTileSubtLight.copyWith(fontSize: 14)
+                      : AppText.listTileSubtDark.copyWith(fontSize: 14),
                 ),
               ),
             ),

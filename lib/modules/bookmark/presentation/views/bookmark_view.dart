@@ -95,7 +95,10 @@ class BookmarkView extends GetView<BookmarkController> {
                             },
                           );
                         },
-                        child: Text("Ke Ayat"),
+                        child: Text(
+                          "Ke Ayat",
+                          textScaler: TextScaler.linear(0.8),
+                        ),
                       ),
                     );
                   },

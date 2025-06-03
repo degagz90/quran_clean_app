@@ -42,7 +42,12 @@ class CompassWidgetState extends State<CompassWidget> {
                             color: AppColors.ungu2,
                           ),
                         )
-                      : Text("cari arah kiblat", style: AppText.subtitleText),
+                      : Text(
+                          "cari arah kiblat",
+                          style: Get.theme.brightness == Brightness.light
+                              ? AppText.subtitleText
+                              : AppText.listTileSubtDark.copyWith(fontSize: 14),
+                        ),
                 ),
                 SizedBox(height: 16, child: Icon(Icons.arrow_drop_down_sharp)),
                 Stack(
@@ -54,12 +59,16 @@ class CompassWidgetState extends State<CompassWidget> {
                         'assets/images/compass2.png', // pastikan file ini ada
                         width: 170,
                         height: 170,
-                        color: AppColors.abu1,
+                        color: Get.theme.brightness == Brightness.light
+                            ? AppColors.abu1
+                            : AppColors.ungu3,
                       ),
                     ),
                     Text(
                       " ${(heading < 0 ? heading + 360 : heading).toStringAsFixed(0)}°",
-                      style: AppText.subtitleText,
+                      style: Get.theme.brightness == Brightness.light
+                          ? AppText.subtitleText
+                          : AppText.listTileSubtDark.copyWith(fontSize: 14),
                     ),
                   ],
                 ),
