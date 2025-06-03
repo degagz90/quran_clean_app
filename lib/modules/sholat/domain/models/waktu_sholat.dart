@@ -5,8 +5,8 @@ class WaktuSholat {
   DateTime asharTime;
   DateTime maghribTime;
   DateTime isyaTime;
-  String nextPrayer;
-  DateTime nextPrayerTime;
+  double locationLat;
+  double locationLong;
 
   WaktuSholat({
     required this.subuhTime,
@@ -15,7 +15,7 @@ class WaktuSholat {
     required this.asharTime,
     required this.maghribTime,
     required this.isyaTime,
-    required this.nextPrayer,
-    required this.nextPrayerTime,
+    required this.locationLat,
+    required this.locationLong,
   });
 }

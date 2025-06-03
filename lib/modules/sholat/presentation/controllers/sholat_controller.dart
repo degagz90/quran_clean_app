@@ -1,15 +1,19 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:timezone/timezone.dart' as tz;
 
+import '../../../../core/utils/formater.dart';
 import '../../../notification/data/repositories/local_notification_repository_impl.dart';
 import '../../../settings/data/repositories/setting_repository_impl.dart';
 import '../../data/repositories/sholat_repository_impl.dart';
 import '../../domain/models/hijri_date.dart';
 import '../../domain/models/location.dart';
+import '../../domain/models/next_sholat.dart';
 import '../../domain/models/waktu_sholat.dart';
 import '../../domain/usecases/get_hijri_date.dart';
 import '../../domain/usecases/get_location.dart';
+import '../../domain/usecases/get_next_prayer.dart';
 import '../../domain/usecases/get_qibla.dart';
 import '../../domain/usecases/get_waktu_sholat.dart';
 
@@ -21,6 +25,7 @@ class SholatController extends GetxController {
   Rx<Location?> location = Rx<Location?>(null);
   Rx<HijriDate?> hijriDate = Rx<HijriDate?>(null);
   Rx<WaktuSholat?> waktuSholat = Rx<WaktuSholat?>(null);
+  Rx<NextSholat?> nextSholat = Rx<NextSholat?>(null);
   Rx<Duration> countDown = Duration.zero.obs;
   double arahKiblat = 0;
   int timeZone = 0;
@@ -38,16 +43,13 @@ class SholatController extends GetxController {
     });
 
     _timer2 = Timer.periodic(Duration(seconds: 1), (timer) async {
-      if (location.value == null || waktuSholat.value == null) {
+      if (location.value == null || nextSholat.value == null) {
         return;
       }
-      timeZone = getTimeZone(location.value!.longitude);
-      final diff = waktuSholat.value!.nextPrayerTime.difference(
-        DateTime.now().add(Duration(hours: timeZone)),
-      );
+      final diff = nextSholat.value!.nextSholatTime.difference(DateTime.now());
       countDown.value = diff.isNegative ? Duration.zero : diff;
       if (diff.inSeconds <= 0) {
-        await getWaktuSholat();
+        await getNextSholat();
       }
     });
   }
@@ -65,7 +67,6 @@ class SholatController extends GetxController {
   }
 
   Future<void> getLocation() async {
-    if (location.value != null) return;
     final locationUseCase = GetLocation(repository);
     location.value = await locationUseCase.execute();
   }
@@ -77,13 +78,18 @@ class SholatController extends GetxController {
     }
   }
 
-  int getTimeZone(double longitude) {
-    return switch (longitude) {
-      >= 95 && < 110 => 7,
-      >= 110 && < 135 => 8,
-      >= 135 && <= 141 => 9,
-      _ => 0,
-    };
+  Future<void> getNextSholat() async {
+    final nextSholatUseCase = GetNextPrayer(repository);
+    if (location.value != null) {
+      nextSholat.value = await nextSholatUseCase.execute(location.value!);
+    }
+  }
+
+  String timeZoneFormatter(DateTime prayerTime) {
+    final timezoneName = location.value!.timeZone;
+    final timezone = tz.getLocation(timezoneName);
+    final DateTime timeZoned = tz.TZDateTime.from(prayerTime, timezone);
+    return Formater.jam(timeZoned);
   }
 
   Future<void> getQibla(Location location) async {

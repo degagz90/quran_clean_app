@@ -39,13 +39,10 @@ class CompassWidgetState extends State<CompassWidget> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: Colors.red,
+                            color: AppColors.ungu2,
                           ),
                         )
-                      : Text(
-                          "mencari arah kiblat",
-                          style: AppText.subtitleText,
-                        ),
+                      : Text("cari arah kiblat", style: AppText.subtitleText),
                 ),
                 SizedBox(height: 16, child: Icon(Icons.arrow_drop_down_sharp)),
                 Stack(

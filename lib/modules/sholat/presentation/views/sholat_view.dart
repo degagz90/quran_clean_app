@@ -33,7 +33,7 @@ class SholatView extends GetView<SholatController> {
                   Divider(height: 30),
                   PrayerTimeWidget(),
                   Divider(height: 10),
-                  Text("Arah Kiblat:"),
+                  Text("Kompas Kiblat:"),
                   CompassWidget(),
                 ],
               ),

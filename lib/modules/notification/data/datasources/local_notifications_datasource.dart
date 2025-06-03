@@ -20,7 +20,6 @@ class NotificationService {
           (NotificationResponse notificationResponse) async {
             // Handle notification tap
           },
-      onDidReceiveBackgroundNotificationResponse: (details) {},
     );
   }
 
@@ -40,7 +39,6 @@ class NotificationService {
     NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
     );
-    final utcTime = prayerTime.toUtc();
     final localTime = tz.TZDateTime.from(prayerTime, tz.local);
     await _flutterLocalNotificationsPlugin.zonedSchedule(
       0,

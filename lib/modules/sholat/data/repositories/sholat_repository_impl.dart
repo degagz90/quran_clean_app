@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import '../../../../core/utils/formater.dart';
 import '../../domain/models/hijri_date.dart';
 import '../../domain/models/location.dart';
+import '../../domain/models/next_sholat.dart';
 import '../../domain/models/waktu_sholat.dart';
 import '../../domain/repositories/sholat_repository.dart';
 import '../datasources/sholat_adhan_datasource.dart';
@@ -61,6 +62,7 @@ class SholatRepositoryImpl implements SholatRepository {
       return Location(
         wilayah: cachedData['wilayah'],
         kota: cachedData['kota'],
+        timeZone: cachedData['timeZone'],
         latitude: cachedData['latitude'],
         longitude: cachedData['longitude'],
       );
@@ -78,9 +80,16 @@ class SholatRepositoryImpl implements SholatRepository {
       url: "https://us1.api-bdc.net/data/reverse-geocode-client",
       query: query,
     );
+    final List<Map<String, dynamic>> informasi = List.from(
+      data["localityInfo"]["informative"],
+    );
+    final timeZone = informasi.firstWhere(
+      (element) => element["description"] == "zona waktu",
+    )["name"];
     final location = Location(
       wilayah: data["locality"],
       kota: data["city"],
+      timeZone: timeZone,
       latitude: position.latitude,
       longitude: position.longitude,
     );
@@ -90,6 +99,7 @@ class SholatRepositoryImpl implements SholatRepository {
     await localData.writeCache('location_cache', {
       'wilayah': location.wilayah,
       'kota': location.kota,
+      'timeZone': location.timeZone,
       'latitude': location.latitude,
       'longitude': location.longitude,
     }, expTime);
@@ -99,44 +109,87 @@ class SholatRepositoryImpl implements SholatRepository {
 
   @override
   Future<WaktuSholat> getPrayerTime(Location location) async {
+    //cek cache apakah sudah ada data
+    final cacheKey = "waktu_sholat";
+    var cachedData = await localData.readCache(cacheKey);
+    //cek cache apakah lat dan long ada perubahan
+    if (cachedData != null &&
+        cachedData["locationLat"] == location.latitude &&
+        cachedData["locationLong"] == location.longitude) {
+      return WaktuSholat(
+        subuhTime: DateTime.parse(cachedData['subuhTime']),
+        terbitTime: DateTime.parse(cachedData['terbitTime']),
+        dzuhurTime: DateTime.parse(cachedData['dzuhurTime']),
+        asharTime: DateTime.parse(cachedData['asharTime']),
+        maghribTime: DateTime.parse(cachedData['maghribTime']),
+        isyaTime: DateTime.parse(cachedData['isyaTime']),
+        locationLat: cachedData['locationLat'],
+        locationLong: cachedData['locationLong'],
+      );
+    }
+
+    //kalau ada perubahan maka fetch ulang data
     PrayerTimes prayerTimesData = await adhan.getPrayerTimes(
       location.latitude,
       location.longitude,
     );
 
-    String next = prayerTimesData.nextPrayer();
-    var nextPrayerTime = prayerTimesData.timeForPrayer(next);
-
-    String nextId = switch (next) {
-      'fajr' || "fajrafter" => "Subuh",
-      'sunrise' => "Terbit",
-      "dhuhr" => "Dzuhur",
-      "asr" => "Ashar",
-      "maghrib" => "Maghrib",
-      "isha" => "Isya",
-      _ => "-",
-    };
-
-    int addTimeZone = switch (location.longitude) {
-      >= 95 && < 110 => 7,
-      >= 110 && < 135 => 8,
-      >= 135 && <= 141 => 9,
-      _ => 0,
-    };
-    return WaktuSholat(
-      subuhTime: prayerTimesData.fajr!.add(Duration(hours: addTimeZone)),
-      terbitTime: prayerTimesData.sunrise!.add(Duration(hours: addTimeZone)),
-      dzuhurTime: prayerTimesData.dhuhr!.add(Duration(hours: addTimeZone)),
-      asharTime: prayerTimesData.asr!.add(Duration(hours: addTimeZone)),
-      maghribTime: prayerTimesData.maghrib!.add(Duration(hours: addTimeZone)),
-      isyaTime: prayerTimesData.isha!.add(Duration(hours: addTimeZone)),
-      nextPrayer: nextId,
-      nextPrayerTime: nextPrayerTime!.add(Duration(hours: addTimeZone)),
+    final waktuSholat = WaktuSholat(
+      subuhTime: prayerTimesData.fajr!,
+      terbitTime: prayerTimesData.sunrise!,
+      dzuhurTime: prayerTimesData.dhuhr!,
+      asharTime: prayerTimesData.asr!,
+      maghribTime: prayerTimesData.maghrib!,
+      isyaTime: prayerTimesData.isha!,
+      locationLat: location.latitude,
+      locationLong: location.longitude,
     );
+    // simpan ke cache, hapus jika tanggal berubah
+    final tomorrow = DateTime.now().add(Duration(days: 1));
+    final expTime = DateTime(tomorrow.year, tomorrow.month, tomorrow.day);
+    await localData.writeCache(cacheKey, {
+      "subuhTime": waktuSholat.subuhTime.toIso8601String(),
+      "terbitTime": waktuSholat.terbitTime.toIso8601String(),
+      "dzuhurTime": waktuSholat.dzuhurTime.toIso8601String(),
+      "asharTime": waktuSholat.asharTime.toIso8601String(),
+      "maghribTime": waktuSholat.maghribTime.toIso8601String(),
+      "isyaTime": waktuSholat.isyaTime.toIso8601String(),
+      "locationLat": waktuSholat.locationLat,
+      "locationLong": waktuSholat.locationLong,
+    }, expTime);
+
+    //kembalikan waktusholat
+    return waktuSholat;
   }
 
   @override
   Future<double> getQiblaDirectrion(Location location) async {
     return await adhan.getQiblaDirection(location.latitude, location.longitude);
+  }
+
+  @override
+  Future<NextSholat> getNextPrayer(Location location) async {
+    //fetch data dari adhan
+    final prayerTimes = await adhan.getPrayerTimes(
+      location.latitude,
+      location.longitude,
+    );
+    final String nextPrayer = prayerTimes.nextPrayer();
+    final nextPrayerTime = prayerTimes.timeForPrayer(nextPrayer);
+    //ubah nama prayer ke dalam bahasa Indonesia
+    final prayerNameId = switch (nextPrayer) {
+      "fajr" || "fajrafter" => "Subuh",
+      "sunrise" => "Terbit",
+      "dhuhr" => "Dzuhur",
+      "asr" => "Ashar",
+      "maghrib" => "Maghrib",
+      "isha" => "Isya",
+      _ => "no data",
+    };
+    //kembalikan nexprayer
+    return NextSholat(
+      nextSholatName: prayerNameId,
+      nextSholatTime: nextPrayerTime!,
+    );
   }
 }

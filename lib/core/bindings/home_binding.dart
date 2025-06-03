@@ -6,6 +6,6 @@ class HomeBinding implements Bindings {
   @override
   void dependencies() {
     Get.put(HomeController(), permanent: true);
-    // Get.put(SholatController(), permanent: true);
+    Get.put(SholatController(), permanent: true);
   }
 }
