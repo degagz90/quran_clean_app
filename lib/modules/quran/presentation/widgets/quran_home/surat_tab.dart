@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quran_clean/core/constants/text_styles/app_text.dart';
 
 import '../../../../../core/routes/app_routes.dart';
 import '../../controllers/quran_controller.dart';
@@ -22,8 +23,9 @@ class SuratTab extends StatelessWidget {
           ),
           leading: CircleAvatar(child: Text('${surat.noSurat}')),
           title: Text('${surat.name} (${surat.indoName})'),
+          titleTextStyle: TextStyle(fontSize: 14, fontFamily: "Poppins"),
           subtitle: Text('${surat.type} - ${surat.jmlAyat} ayat'),
-          trailing: Text(surat.arabName, style: TextStyle(fontFamily: 'Amiri')),
+          trailing: Text(surat.arabName, style: AppText.arabUnguTrailing),
         );
       },
     );

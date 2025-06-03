@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../controllers/home_controller.dart';
 
@@ -18,39 +17,37 @@ class HomeView extends GetView<HomeController> {
           elevation: 15,
           destinations: [
             NavigationDestination(
-              selectedIcon: SizedBox(
-                height: 24,
-                width: 24,
-                child: Image.asset("assets/icons/quran.png"),
+              selectedIcon: ImageIcon(
+                AssetImage("assets/icons/quran.png"),
+                size: 24,
+                color: Colors.white,
               ),
-              icon: SizedBox(
-                height: 24,
-                width: 24,
-                child: Image.asset("assets/icons/quran_outlined.png"),
+              icon: ImageIcon(
+                AssetImage("assets/icons/quran_outlined.png"),
+                size: 24,
               ),
               label: 'Quran',
             ),
             NavigationDestination(
-              selectedIcon: SizedBox(
-                height: 24,
-                width: 24,
-                child: Image.asset("assets/icons/sholat.png"),
+              selectedIcon: ImageIcon(
+                AssetImage("assets/icons/sholat.png"),
+                size: 24,
+                color: Colors.white,
               ),
-              icon: SizedBox(
-                height: 24,
-                width: 24,
-                child: Image.asset("assets/icons/sholat_outlined.png"),
+              icon: ImageIcon(
+                AssetImage("assets/icons/sholat_outlined.png"),
+                size: 24,
               ),
               label: 'Sholat',
             ),
             NavigationDestination(
               selectedIcon: Icon(Icons.bookmark, color: Colors.white),
-              icon: Icon(Icons.bookmark_border, color: AppColors.ungu2),
+              icon: Icon(Icons.bookmark_border),
               label: 'Catatan',
             ),
             NavigationDestination(
               selectedIcon: Icon(Icons.settings, color: Colors.white),
-              icon: Icon(Icons.settings_outlined, color: AppColors.abu1),
+              icon: Icon(Icons.settings_outlined),
               label: 'Pengaturan',
             ),
           ],

@@ -78,7 +78,9 @@ class _AyatWidgetState extends State<AyatWidget> {
               padding: EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: AppColors.abu2.withAlpha(15),
+                color: Get.theme.brightness == Brightness.light
+                    ? AppColors.abu2.withAlpha(15)
+                    : AppColors.biruTua3,
               ),
               height: 40,
               child: Row(
@@ -114,9 +116,16 @@ class _AyatWidgetState extends State<AyatWidget> {
               title: Text(
                 ayat.text,
                 textAlign: TextAlign.right,
-                style: AppText.arabBiruText,
+                style: Get.theme.brightness == Brightness.light
+                    ? AppText.arabBiruText
+                    : AppText.arabPutihText,
               ),
-              subtitle: Text(ayat.terjemah, style: AppText.subtitleText),
+              subtitle: Text(
+                ayat.terjemah,
+                style: Get.theme.brightness == Brightness.light
+                    ? AppText.listTileSubtLight
+                    : AppText.listTileSubtDark,
+              ),
             ),
           ],
         );

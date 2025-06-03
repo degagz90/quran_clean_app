@@ -68,7 +68,12 @@ class SuratSearchButton extends StatelessWidget {
           return ListTile(
             title: RichText(
               text: TextSpan(
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                  fontFamily: "Poppins",
+                  color: Get.theme.brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
+                ),
                 children: [
                   TextSpan(text: "${ayat.noAyat}. "),
                   if (matchStart != -1) ...[
@@ -76,6 +81,7 @@ class SuratSearchButton extends StatelessWidget {
                     TextSpan(
                       text: snippet.substring(matchStart, matchEnd),
                       style: TextStyle(
+                        fontFamily: "Poppins",
                         backgroundColor: Colors.yellow,
                         color: Colors.black,
                       ),

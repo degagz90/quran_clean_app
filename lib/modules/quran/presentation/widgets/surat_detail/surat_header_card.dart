@@ -31,7 +31,7 @@ class SuratHeaderCard extends StatelessWidget {
             ),
             Text(
               controller.surat?.arabName ?? '',
-              style: AppText.arabPutihText,
+              style: AppText.arabTitleText,
             ),
             Text(
               controller.surat?.indoName ?? '',
